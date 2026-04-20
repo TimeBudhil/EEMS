@@ -2,7 +2,7 @@ package Services;
 
 import Domain.Project;
 
-public class ProjectService {
+public class ProjectService extends Services{
 
     //for now we can print the values,
     public static double calculateProjectHRCost(int projectId){

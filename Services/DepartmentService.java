@@ -1,5 +1,5 @@
 package Services;
 
-public class DepartmentService {
+public class DepartmentService extends Services{
 
 }
