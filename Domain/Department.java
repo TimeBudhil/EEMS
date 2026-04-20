@@ -3,6 +3,7 @@ package Domain;
 import java.util.List;
 
 public class Department {
+    private int id;
     private String name;
     private String city;
     private String annual_budget;

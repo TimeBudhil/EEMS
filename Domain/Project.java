@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Project{
+    private int id;
     private String name;
     private String description;
     private LocalDate startDate;
