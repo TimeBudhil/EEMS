@@ -1,4 +1,4 @@
-package controller;
+package Domain;
 public class Project{
 
 }
