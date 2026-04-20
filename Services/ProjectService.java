@@ -1,7 +1,5 @@
 package Services;
 
-import Domain.Project;
-
 public class ProjectService extends Services{
 
     //for now we can print the values,
@@ -13,8 +11,4 @@ public class ProjectService extends Services{
         return 0;
     }
 
-    public static Project[] getProjectsByDepartment(int departmentId, String sortBy){
-        //find all projects where status = active, sorted by the sorting specification
-        return new Project[0];
-    }
 }
