@@ -1,6 +1,6 @@
 package Services;
 
-public class EmployeeService {
+public class EmployeeService extends Services{
 
     //updates employeeID and department record
     public static void transferEmployeeToDepartment(int employeeId, int newDepartmentId){

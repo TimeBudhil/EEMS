@@ -16,5 +16,4 @@ public class Project{
     private List<Employee> employees; //completed by
     private List<Client> clients; //requested by
     // private List<Department> departments; //completed by, can be gained by getting employees'departments!
-
 }
