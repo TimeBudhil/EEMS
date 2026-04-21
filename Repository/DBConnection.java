@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public final class DBConnection {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/your_db";
-    private static final String USER = "user";
-    private static final String PASSWORD = "password";
+    private static final String URL = System.getenv("DB_URL");
+    private static final String USER = System.getenv("DB_USER");
+    private static final String PASSWORD = System.getenv("DB_PASSWORD");
 
     // singleton variable
     private static DBConnection instance;
@@ -30,5 +30,9 @@ public final class DBConnection {
     // static method to get the connection directly
     public static Connection getConnection() throws SQLException {
         return getInstance().connection;
+    }
+    public static void main(String[] args) throws Exception {
+        Connection conn = DBConnection.getConnection();
+        System.out.println(conn);
     }
 }
