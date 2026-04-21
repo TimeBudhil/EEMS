@@ -62,7 +62,10 @@ public class ProjectRepository extends Repository {
                     );
                 }
             }
+        } catch(SQLException e){
+            System.err.println(e.getMessage());
         }
+
         throw new SQLException("Insert failed — no ID returned");
     }
     
@@ -91,7 +94,7 @@ public class ProjectRepository extends Repository {
         return projects; // always reached — returns empty list if none found
     }
 
-    public Project findById(int id) throws SQLException {
+    public Project findProjectById(int id) throws SQLException {
         String sql = "SELECT * FROM Project WHERE id = ?";
 
         // PreparedStatement used here — never concatenate user input into SQL

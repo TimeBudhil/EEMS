@@ -3,6 +3,7 @@ package com.mpp.eems.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +23,51 @@ public class DepartmentRepository extends Repository{
         return d;
     }
 
-    public void addDepartment(){
+    
+    public Department addDepartment(Department department) throws SQLException {
+        String sql = """
+                INSERT INTO Department (name, city, annual_budget)
+                VALUES (?, ?, ?)
+                """;
 
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, department.getName());
+            stmt.setString(2, department.getCity());
+            stmt.setObject(3, department.getAnnual_budget());   // LocalDate maps cleanly via setObject
+
+            stmt.executeUpdate();
+
+            // Retrieve the DB-generated id and return a complete Project
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+                    return new Department(
+                        generatedId,
+                        department.getName(),
+                        department.getCity(),
+                        department.getAnnual_budget(),
+                        new ArrayList<>()
+                    );
+                }
+            }
+        }
+        throw new SQLException("Insert failed — no ID returned");
     }
     
-    public void findDepartment(){
+    public Department findDepartmentById(int departmentId){
+        String sql = "SELECT * FROM Department WHERE id = ?";
 
+        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+            stmt.setInt(1, departmentId);
+            try(ResultSet rs = stmt.executeQuery(sql)){
+                if(rs.next()){
+                    return mapRowToDepartment(rs);
+                }
+            }
+        } catch(SQLException e){
+            System.err.println(e.getMessage());
+        }
+        return null;
     }
     
     public void findAllDepartment(){
