@@ -8,8 +8,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mpp.eems.Domain.Department;
-import com.mpp.eems.Domain.Employee;
 import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Domain.Status;
 
@@ -183,47 +181,4 @@ public class ProjectRepository extends Repository {
         }
     }
 
-    public List<Employee> findAssociatedEmployees(int projectId) throws SQLException {
-        String sql = """
-                SELECT e.*
-                FROM Employee e
-                JOIN Employee_Project ep ON e.id = ep.employee_id
-                WHERE ep.project_id = ?
-                """;
-
-        List<Employee> employees = new ArrayList<>();
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, projectId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    employees.add(mapRowToEmployee(rs));
-                }
-            }
-        }
-        return employees;
-    }
-
-    public List<Department> findAssociatedDepartments(int projectId) throws SQLException {
-    String sql = """
-            SELECT DISTINCT d.*
-            FROM Department d
-            JOIN Employee e ON e.department_id = d.id
-            JOIN Employee_Project ep ON ep.employee_id = e.id
-            WHERE ep.project_id = ?
-            """;
-
-    List<Department> departments = new ArrayList<>();
-
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-        stmt.setInt(1, projectId);
-        try (ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                departments.add(mapRowToDepartment(rs));
-            }
-        }
-    }
-    return departments;
-}
-    
 }
