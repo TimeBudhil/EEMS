@@ -17,7 +17,7 @@ public class Project{
     private List<Client> clients; //requested by
 
     //derived association
-    // private List<Department> departments; //completed by, can be gained by getting employees'departments!
+    private List<Department> departments; //completed by, can be gained by getting employees'departments!
 
     public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, double totalBudget, Status status, List<Employee> employees, List<Client> clients) {
         this.id = id;
