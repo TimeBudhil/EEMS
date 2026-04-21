@@ -205,25 +205,25 @@ public class ProjectRepository extends Repository {
     }
 
     public List<Department> findAssociatedDepartments(int projectId) throws SQLException {
-        String sql = """
-                SELECT DISTINCT d.*
-                FROM Department d
-                JOIN Employee e ON e.department_id = d.id
-                JOIN Employee_Project ep ON ep.employee_id = e.id
-                WHERE ep.project_id = ?
-                """;
+    String sql = """
+            SELECT DISTINCT d.*
+            FROM Department d
+            JOIN Employee e ON e.department_id = d.id
+            JOIN Employee_Project ep ON ep.employee_id = e.id
+            WHERE ep.project_id = ?
+            """;
 
-        List<Department> departments = new ArrayList<>();
+    List<Department> departments = new ArrayList<>();
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, projectId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    departments.add(mapRowToDepartment(rs));
-                }
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setInt(1, projectId);
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                departments.add(mapRowToDepartment(rs));
             }
         }
-        return departments;
     }
+    return departments;
+}
     
 }
