@@ -1,4 +1,4 @@
-package src.main.java.com.mpp.eems.Repository;
+package com.mpp.eems.Repository;
 
 public class  ClientRepository extends Repository{
 
