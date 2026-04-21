@@ -10,6 +10,38 @@ public class Department {
 
     //associations
     private List<Employee> employeeList;
-    private List<Project> projects;
 
+    //derived association
+    // private List<Project> projects;
+
+
+    public Department(int id, String name, String city, String annual_budget, List<Employee> employeeList) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
+        this.annual_budget = annual_budget;
+        this.employeeList = employeeList;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getAnnual_budget() {
+        return annual_budget;
+    }
+
+    public List<Employee> getEmployeeList() {
+        return employeeList;
+    }
+
+    
 }

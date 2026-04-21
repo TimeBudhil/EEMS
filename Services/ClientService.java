@@ -1,13 +1,24 @@
 package Services;
 
 import Domain.Client;
+import Domain.Project;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientService  extends Services{
 
     //lists all clients where their projects have currentDate - project.deadline < daysUntilDeadline
-    public static Client[] findClientsByUpcomingProjectDeadline(int daysUntilDeadline){
-
-        return new Client[0];
+    public static List<Client> findClientsByUpcomingProjectDeadline(int daysUntilDeadline){
+        //Get Clients[] using repository
+        List<Project> projects = new ArrayList<>();  //TEMPORARY 
+        List<Client> clients = new ArrayList<>(); //TEMPORARY WHILE REPO LAYER IS GETTING WORKED ON
+        
+        // return Arrays.stream(projects)
+        //     .filter(p -> LocalDate.now() - p.getDeadline() < daysUntilDeadline)
+        //     .flatMap(p -> p.getClients())
+        //     .distinct()
+        //     .collect(Collectors.toList());
+        return clients;
     }
 
 }
