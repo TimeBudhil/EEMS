@@ -1,12 +1,10 @@
 package com.mpp.eems.Repository;
 
 import com.mpp.eems.Domain.Client;
+import com.mpp.eems.Domain.Department;
 import com.mpp.eems.Domain.Status;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,11 +26,11 @@ public class  ClientRepository extends Repository{
     }
 
 
-    public void addClient(Client client) throws SQLException {
+    public Client addClient(Client client) throws SQLException {
 
         String sql = "INSERT INTO client (id, name, industry, primary_contact_name, primary_contact_phone, primary_contact_email) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql) ) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS) ) {
             pstmt.setInt(1, client.getId());
             pstmt.setString(2, client.getName());
             pstmt.setString(3, client.getIndustry());
@@ -44,11 +42,28 @@ public class  ClientRepository extends Repository{
             if( pstmt.execute() )
                 System.out.println("Client added successfully!");
 
+            // Retrieve the Client-generated id and return a complete Project
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+                    return new Client(
+                            generatedId,
+                            client.getName(),
+                            client.getIndustry(),
+                            client.getPrimaryContactName(),
+                            client.getPrimaryContactPhone(),
+                            client.getPrimaryContactEmail(),
+                            new ArrayList<>()
+                    );
+                }
+            }
+
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
 
+        throw new SQLException("Insert failed");
     }
 
     public Client findClient(int id) {
