@@ -35,7 +35,7 @@ public class Department {
         return city;
     }
 
-    public double getAnnual_budget() {
+    public double getAnnualBudget() {
         return annual_budget;
     }
 
