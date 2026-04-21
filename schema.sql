@@ -44,14 +44,6 @@ CREATE TABLE Employee_Project (
     FOREIGN KEY (project_id) REFERENCES Project(id)
 );
 
-CREATE TABLE Department_Project (
-    department_id INT,
-    project_id INT,
-    PRIMARY KEY (department_id, project_id),
-    FOREIGN KEY (department_id) REFERENCES Department(id),
-    FOREIGN KEY (project_id) REFERENCES Project(id)
-);
-
 CREATE TABLE Client_Project (
     client_id INT,
     project_id INT,
