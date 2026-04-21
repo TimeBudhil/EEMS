@@ -6,7 +6,7 @@ public class Department {
     private int id;
     private String name;
     private String city;
-    private String annual_budget;
+    private double annual_budget;
 
     //associations
     private List<Employee> employeeList;
@@ -15,7 +15,7 @@ public class Department {
     // private List<Project> projects;
 
 
-    public Department(int id, String name, String city, String annual_budget, List<Employee> employeeList) {
+    public Department(int id, String name, String city, double  annual_budget, List<Employee> employeeList) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -35,7 +35,7 @@ public class Department {
         return city;
     }
 
-    public String getAnnual_budget() {
+    public double getAnnual_budget() {
         return annual_budget;
     }
 
