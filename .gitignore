@@ -1,0 +1,26 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Ignored default folder with query files
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+
+# Maven build output
+target/
+
+# IDE files — IntelliJ
+.idea/
+*.iml          # this covers your EEMS.iml
+
+# IDE files — Eclipse/VS Code (if applicable)
+.classpath
+.project
+.settings/
+
+# OS noise
+.DS_Store
+Thumbs.db
