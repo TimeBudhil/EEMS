@@ -15,9 +15,11 @@ public class Project{
     //associations
     private List<Employee> employees; //completed by
     private List<Client> clients; //requested by
-    private List<Department> departments; //completed by, can be gained by getting employees'departments!
 
-    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, double totalBudget, Status status, List<Employee> employees, List<Client> clients, List<Department> departments) {
+    //derived association
+    // private List<Department> departments; //completed by, can be gained by getting employees'departments!
+
+    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, double totalBudget, Status status, List<Employee> employees, List<Client> clients) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -27,48 +29,45 @@ public class Project{
         this.status = status;
         this.employees = employees;
         this.clients = clients;
-        this.departments = departments;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getDescription() {
+        return description;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setTotalBudget(double totalBudget) {
-        this.totalBudget = totalBudget;
+    public double getTotalBudget() {
+        return totalBudget;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+    public List<Employee> getEmployees() {
+        return employees;
     }
 
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
+    public List<Client> getClients() {
+        return clients;
     }
 
-    public void setDepartments(List<Department> departments) {
-        this.departments = departments;
-    }
+    
 
     
 }

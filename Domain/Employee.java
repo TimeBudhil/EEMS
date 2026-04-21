@@ -26,37 +26,39 @@ public class Employee{
         this.projects = projects;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getTitle() {
+        return title;
     }
 
-    public void setHiredDate(LocalDate hiredDate) {
-        this.hiredDate = hiredDate;
+    public LocalDate getHiredDate() {
+        return hiredDate;
     }
 
-    public void setSalary(double salary) {
-        this.salary = salary;
+    public double getSalary() {
+        return salary;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
+    public List<Project> getProjects() {
+        return projects;
     }
+
+    
 
     
 }
