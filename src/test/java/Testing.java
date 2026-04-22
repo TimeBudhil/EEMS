@@ -1,5 +1,3 @@
-package com.mpp.eems.Test;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -16,7 +14,7 @@ public class Testing {
         ProjectRepository projectRepo = new ProjectRepository();
         // initialize schema first
         try {
-            DatabaseInitializer.initialize(projectRepo.getConnection());
+            DatabaseInitializer.initialize();
             
 
             Project newProject = new Project(

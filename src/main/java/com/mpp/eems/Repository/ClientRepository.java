@@ -1,14 +1,13 @@
 package com.mpp.eems.Repository;
 
-import com.mpp.eems.Domain.Client;
-import com.mpp.eems.Domain.Department;
-import com.mpp.eems.Domain.Status;
-
-import java.sql.*;
-import java.time.LocalDate;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import com.mpp.eems.Domain.Client;
 
 public class  ClientRepository extends Repository{
 
@@ -30,7 +29,7 @@ public class  ClientRepository extends Repository{
 
         String sql = "INSERT INTO client (id, name, industry, primary_contact_name, primary_contact_phone, primary_contact_email) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS) ) {
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS) ) {
             pstmt.setInt(1, client.getId());
             pstmt.setString(2, client.getName());
             pstmt.setString(3, client.getIndustry());
@@ -69,7 +68,7 @@ public class  ClientRepository extends Repository{
     public Client findClient(int id) {
         String sql = "SELECT * FROM client WHERE id = ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -89,7 +88,7 @@ public class  ClientRepository extends Repository{
         List<Client> clients = new ArrayList<>();
         String sql = "SELECT * FROM client";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql);
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
@@ -106,7 +105,7 @@ public class  ClientRepository extends Repository{
     public void modifyClient(Client client) {
         String sql = "UPDATE client SET name = ?, industry = ?, primary_contact_name = ?, primary_contact_phone = ?, primary_contact_email = ? WHERE id = ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql)) {
 
             pstmt.setString(1, client.getName());
             pstmt.setString(2, client.getIndustry());
@@ -126,7 +125,7 @@ public class  ClientRepository extends Repository{
     public void deleteClient(int id) {
         String sql = "DELETE FROM client WHERE id = ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
 

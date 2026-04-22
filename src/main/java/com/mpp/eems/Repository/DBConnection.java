@@ -16,7 +16,7 @@ public final class DBConnection {
 
     // singleton variable
     private static DBConnection instance;
-    private Connection connection;
+    private final Connection connection;
 
     // constructor initializes the connection
     private DBConnection() throws SQLException {
@@ -24,7 +24,8 @@ public final class DBConnection {
     }
 
     // static method that creates/returns the singleton
-    public static DBConnection getInstance() throws SQLException {
+    private static DBConnection getInstance() throws SQLException {
+        //only create a new instance if it doesn' texist..
         if (instance == null) {
             instance = new DBConnection(); // constructor is called here
         }
@@ -32,9 +33,12 @@ public final class DBConnection {
     }
 
     // static method to get the connection directly
-    public static Connection getConnection() throws SQLException {
+    static Connection getConnection() throws SQLException {
+        //gets the connectino of the instance
         return getInstance().connection;
     }
+
+    //testing purpose main 
     public static void main(String[] args) throws Exception {
         Connection conn = DBConnection.getConnection();
         System.out.println(conn);

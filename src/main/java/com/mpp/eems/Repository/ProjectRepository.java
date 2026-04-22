@@ -1,5 +1,6 @@
 package com.mpp.eems.Repository;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +36,7 @@ public class ProjectRepository extends Repository {
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, project.getName());
             stmt.setString(2, project.getDescription());
             stmt.setObject(3, project.getStartDate());   // LocalDate maps cleanly via setObject
@@ -79,7 +80,7 @@ public class ProjectRepository extends Repository {
 
         List<Project> projects = new ArrayList<>();
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setInt(1, employeeId);
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -98,7 +99,7 @@ public class ProjectRepository extends Repository {
         String sql = "SELECT * FROM Project WHERE id = ?";
 
         // PreparedStatement used here — never concatenate user input into SQL
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -116,7 +117,7 @@ public class ProjectRepository extends Repository {
         String sql = "SELECT * FROM Project";
         List<Project> projects = new ArrayList<>();
 
-        try (Statement stmt = connection.createStatement();
+        try (Statement stmt = getConnection().createStatement();
             //get the statement
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -142,7 +143,7 @@ public class ProjectRepository extends Repository {
                 WHERE id = ?
                 """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setString(1, project.getName());
             stmt.setString(2, project.getDescription());
             stmt.setObject(3, project.getStartDate());
@@ -165,6 +166,7 @@ public class ProjectRepository extends Repository {
         String deleteProject       = "DELETE FROM Project WHERE id = ?";
 
         try (
+            Connection connection = getConnection();
             PreparedStatement stmt1 = connection.prepareStatement(deleteEmployeeLinks);
             PreparedStatement stmt2 = connection.prepareStatement(deleteClientLinks);
             PreparedStatement stmt3 = connection.prepareStatement(deleteProject)

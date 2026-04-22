@@ -23,7 +23,7 @@ public class EmployeeRepository extends Repository {
             VALUES (?, ?, ?, ?, ?, ?)
         """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(
+        try (PreparedStatement stmt = getConnection().prepareStatement(
                 sql,
                 Statement.RETURN_GENERATED_KEYS
         )) {
@@ -70,7 +70,7 @@ public class EmployeeRepository extends Repository {
             WHERE e.id = ?
         """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -110,7 +110,7 @@ public class EmployeeRepository extends Repository {
 
         String sql = "SELECT id FROM employee";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -135,7 +135,7 @@ public class EmployeeRepository extends Repository {
             WHERE id=?
         """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
 
             stmt.setString(1, emp.getFirstName());
             stmt.setString(2, emp.getLastName());
@@ -159,7 +159,7 @@ public class EmployeeRepository extends Repository {
 
         String sql = "DELETE FROM employee WHERE id=?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();

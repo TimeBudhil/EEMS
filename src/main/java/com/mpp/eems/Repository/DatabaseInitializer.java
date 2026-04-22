@@ -1,19 +1,18 @@
-package com.mpp.eems.Repository;
+package com.mpp.eems.Repository.Database;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseInitializer {
 
-    public static void initialize(Connection connection) throws SQLException, IOException {
+    public static void initialize() throws SQLException, IOException {
         String sql = Files.readString(Paths.get("schema.sql"));
         String[] statements = sql.split(";");
 
-        try (Statement stmt = connection.createStatement()) {
+        try (Statement stmt = DBConnection.getConnection().createStatement()) {
             for (String statement : statements) {
                 String trimmed = statement.trim();
                 if (!trimmed.isEmpty()) {

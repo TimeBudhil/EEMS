@@ -1,5 +1,6 @@
 package com.mpp.eems.Repository;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +30,7 @@ public class DepartmentRepository extends Repository{
                 VALUES (?, ?, ?)
                 """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, department.getName());
             stmt.setString(2, department.getCity());
             stmt.setObject(3, department.getAnnualBudget());   // LocalDate maps cleanly via setObject
@@ -56,7 +57,7 @@ public class DepartmentRepository extends Repository{
     public Department findDepartmentById(int departmentId){
         String sql = "SELECT * FROM Department WHERE id = ?";
 
-        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+        try(PreparedStatement stmt = getConnection().prepareStatement(sql)){
             stmt.setInt(1, departmentId);
             try(ResultSet rs = stmt.executeQuery(sql)){
                 if(rs.next()){
@@ -74,7 +75,7 @@ public class DepartmentRepository extends Repository{
         List<Department> departments = new ArrayList<>();
 
         //try statement
-        try(Statement stmt = connection.createStatement()){
+        try(Statement stmt = getConnection().createStatement()){
             //get all rows
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -100,7 +101,7 @@ public class DepartmentRepository extends Repository{
                 WHERE id = ?
                 """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setString(1, department.getName());
             stmt.setString(2, department.getCity());
             stmt.setDouble(3, department.getAnnualBudget());
@@ -125,6 +126,7 @@ public class DepartmentRepository extends Repository{
         String deleteDepartment = "DELETE FROM Department WHERE id = ?";
 
         try(
+            Connection connection = getConnection();
             PreparedStatement stmt1 = connection.prepareStatement(deleteEmployeeProjectLinks);
         PreparedStatement stmt2 = connection.prepareStatement(deleteEmployeeLinks);
         PreparedStatement stmt3 = connection.prepareStatement(deleteDepartment);
@@ -157,7 +159,7 @@ public class DepartmentRepository extends Repository{
                 """;
 
         //prepared statement
-        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+        try(PreparedStatement stmt = getConnection().prepareStatement(sql)){
             //insert the id of the employee
             stmt.setInt(1, employeeId);
 
@@ -190,7 +192,7 @@ public class DepartmentRepository extends Repository{
 
         List<Department> departments = new ArrayList<>();
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setInt(1, projectId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
