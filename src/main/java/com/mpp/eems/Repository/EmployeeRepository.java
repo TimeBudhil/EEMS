@@ -105,16 +105,36 @@ public class EmployeeRepository extends Repository {
     // FIND ALL
     // =========================
     public List<Employee> findAll() {
-
         List<Employee> list = new ArrayList<>();
 
-        String sql = "SELECT id FROM employee";
+        String sql = """
+            SELECT e.*, d.id AS d_id, d.name, d.city, d.annual_budget
+            FROM employee e
+            JOIN department d ON e.department_id = d.id
+        """;
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+            ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                list.add(findById(rs.getInt("id")));
+                Department dept = new Department(
+                        rs.getInt("d_id"),
+                        rs.getString("name"),
+                        rs.getString("city"),
+                        rs.getDouble("annual_budget"),
+                        null
+                );
+
+                list.add(new Employee(
+                        rs.getInt("id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("title"),
+                        rs.getDate("date_hired").toLocalDate(),
+                        rs.getDouble("salary"),
+                        dept,
+                        null
+                ));
             }
 
         } catch (Exception e) {
@@ -156,13 +176,19 @@ public class EmployeeRepository extends Repository {
     // DELETE
     // =========================
     public void delete(int id) {
+        //must delete all links
+        String deleteProjectLinks = "DELETE FROM Employee_Project WHERE employee_id = ?";
+        String deleteEmployee     = "DELETE FROM employee WHERE id = ?";
 
-        String sql = "DELETE FROM employee WHERE id=?";
+        try (
+            PreparedStatement stmt1 = getConnection().prepareStatement(deleteProjectLinks);
+            PreparedStatement stmt2 = getConnection().prepareStatement(deleteEmployee)
+        ) {
+            stmt1.setInt(1, id);
+            stmt1.executeUpdate();
 
-        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+            stmt2.setInt(1, id);
+            stmt2.executeUpdate();
 
         } catch (Exception e) {
             throw new RuntimeException(e);
