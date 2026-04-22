@@ -1,25 +1,53 @@
 package com.mpp.eems.Services;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.mpp.eems.Domain.Employee;
 import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Domain.Status;
+import com.mpp.eems.Repository.EmployeeProjectRepository;
+import com.mpp.eems.Repository.EmployeeRepository;
 import com.mpp.eems.Repository.ProjectRepository;
 
 public class ProjectService extends Services{
 
     ProjectRepository projRepo = new ProjectRepository();
+    EmployeeRepository empRepo = new EmployeeRepository();
+    EmployeeProjectRepository empProjRepo = new EmployeeProjectRepository();
 
     //for now we can print the values,
-    public static double calculateProjectHRCost(int projectId){
+    public double calculateProjectHRCost(int projectId){
         //find project time
+        Project p = null;
+        try {
+            p = projRepo.findProjectById(projectId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        long months = ChronoUnit.MONTHS.between(
+            p.getStartDate(),
+            p.getEndDate()
+        );
+
+        List<Employee> employees = empProjRepo.findEmployeeIdsByProject(projectId).stream()
+            .map(eid -> empRepo.findById(eid))
+            .toList();
+        
+        double totalCost = 0;
+
+        //incomplete, need to implement getAllocationPercentage!
+        for(Employee e : employees){    
+            // totalCost += e.getSalary() / 12 * months * e.getAllocationPercentage(projectId)/100;
+        }
         //For every employee assigned to the project, calculate their weighted cost:
         //e.salary/12 * months * allocationpercentage/100
-        return 0;
+        return totalCost;
     }
 
 
