@@ -95,6 +95,29 @@ public class ProjectRepository extends Repository {
         return projects; // always reached — returns empty list if none found
     }
 
+    public List<Project> findProjectsByDepartment(int departmentId) {
+        String sql = """
+                SELECT p.*
+                FROM Project p
+                JOIN Project_Department pd ON p.id = pd.project_id
+                WHERE pd.department_id = ?
+                """;
+        List<Project> projects = new ArrayList<>();
+
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, departmentId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    projects.add(mapRowToProject(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return projects;
+    }
+
     public Project findProjectById(int id) throws SQLException {
         String sql = "SELECT * FROM Project WHERE id = ?";
 
@@ -161,15 +184,18 @@ public class ProjectRepository extends Repository {
     }
     
     public void deleteProject(int projectId) throws SQLException {
-        String deleteEmployeeLinks = "DELETE FROM Employee_Project WHERE project_id = ?";
-        String deleteClientLinks   = "DELETE FROM Client_Project WHERE project_id = ?";
-        String deleteProject       = "DELETE FROM Project WHERE id = ?";
+        //delete all links!
+        String deleteEmployeeLinks   = "DELETE FROM Employee_Project WHERE project_id = ?";
+        String deleteClientLinks     = "DELETE FROM Client_Project WHERE project_id = ?";
+        String deleteDepartmentLinks = "DELETE FROM Project_Department WHERE project_id = ?";
+        String deleteProject         = "DELETE FROM Project WHERE id = ?";
 
         try (
             Connection connection = getConnection();
             PreparedStatement stmt1 = connection.prepareStatement(deleteEmployeeLinks);
             PreparedStatement stmt2 = connection.prepareStatement(deleteClientLinks);
-            PreparedStatement stmt3 = connection.prepareStatement(deleteProject)
+            PreparedStatement stmt3 = connection.prepareStatement(deleteDepartmentLinks);
+            PreparedStatement stmt4 = connection.prepareStatement(deleteProject)
         ) {
             stmt1.setInt(1, projectId);
             stmt1.executeUpdate();
@@ -178,7 +204,10 @@ public class ProjectRepository extends Repository {
             stmt2.executeUpdate();
 
             stmt3.setInt(1, projectId);
-            int rowsAffected = stmt3.executeUpdate();
+            stmt3.executeUpdate();
+
+            stmt4.setInt(1, projectId);
+            int rowsAffected = stmt4.executeUpdate();
 
             if (rowsAffected == 0) {
                 throw new SQLException("Delete failed — no project found with id: " + projectId);
