@@ -1,4 +1,4 @@
-package com.mpp.eems.Repository.Database;
+package com.mpp.eems.Repository;
 
 import java.io.IOException;
 import java.nio.file.Files;
