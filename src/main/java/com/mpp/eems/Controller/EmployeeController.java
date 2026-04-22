@@ -1,52 +1,61 @@
 package com.mpp.eems.Controller;
 
 import com.mpp.eems.Domain.Employee;
+
 import com.mpp.eems.Services.EmployeeService;
+import com.sun.net.httpserver.HttpExchange;
 
-import java.util.List;
+import java.io.*;
+import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class EmployeeController extends Controller{
+public class EmployeeController {
 
+    private EmployeeService service = new EmployeeService();
 
-        private final EmployeeService employeeService;
+    public void handle(HttpExchange exchange) throws IOException {
 
-        public EmployeeController() {
-            this.employeeService = new EmployeeService();
+        String method = exchange.getRequestMethod();
+        String path = exchange.getRequestURI().getPath();
+
+        if ("GET".equals(method) && path.equals("/employees")) {
+            send(exchange, service.getAllEmployees().toString());
         }
 
-        // =========================
-        // CREATE EMPLOYEE
-        // =========================
-        public Employee createEmployee(Employee emp) {
-            return employeeService.createEmployee(emp);
+        else if ("GET".equals(method) && path.startsWith("/employees/")) {
+            int id = Integer.parseInt(path.split("/")[2]);
+            send(exchange, service.getEmployeeById(id).toString());
         }
 
-        // =========================
-        // GET EMPLOYEE BY ID
-        // =========================
-        public Employee getEmployeeById(int id) {
-            return employeeService.getEmployeeById(id);
+        else if ("POST".equals(method)) {
+            String body = new BufferedReader(new InputStreamReader(exchange.getRequestBody()))
+                    .lines().collect(Collectors.joining());
+
+            // Simple JSON parsing (matches your structure)
+
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            try {
+                Employee emp = mapper.readValue(body, Employee.class);
+                send(exchange, service.createEmployee(emp).toString());
+            } catch (Exception e) {
+                send(exchange, "Invalid JSON format");
+            }
+//            send(exchange, service.createEmployee(emp).toString());
         }
 
-        // =========================
-        // GET ALL EMPLOYEES
-        // =========================
-        public List<Employee> getAllEmployees() {
-            return employeeService.getAllEmployees();
-        }
-
-        // =========================
-        // UPDATE EMPLOYEE
-        // =========================
-        public void updateEmployee(Employee emp) {
-            employeeService.updateEmployee(emp);
-        }
-
-        // =========================
-        // DELETE EMPLOYEE
-        // =========================
-        public void deleteEmployee(int id) {
-            employeeService.deleteEmployee(id);
+        else if ("DELETE".equals(method) && path.startsWith("/employees/")) {
+            int id = Integer.parseInt(path.split("/")[2]);
+            service.deleteEmployee(id);
+            send(exchange, "Deleted");
         }
     }
 
+    private void send(HttpExchange ex, String response) throws IOException {
+        ex.sendResponseHeaders(200, response.length());
+        OutputStream os = ex.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+}
