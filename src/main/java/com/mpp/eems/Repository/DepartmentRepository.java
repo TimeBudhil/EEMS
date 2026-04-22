@@ -54,19 +54,20 @@ public class DepartmentRepository extends Repository{
         throw new SQLException("Insert failed — no ID returned");
     }
     
-    public Department findDepartmentById(int departmentId){
+    public Department findDepartmentById(int departmentId) {
         String sql = "SELECT * FROM Department WHERE id = ?";
 
-        try(PreparedStatement stmt = getConnection().prepareStatement(sql)){
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setInt(1, departmentId);
-            try(ResultSet rs = stmt.executeQuery(sql)){
-                if(rs.next()){
+            try (ResultSet rs = stmt.executeQuery()) {  // was incorrectly passing sql string
+                if (rs.next()) {
                     return mapRowToDepartment(rs);
                 }
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+
         return null;
     }
     
@@ -118,35 +119,39 @@ public class DepartmentRepository extends Repository{
         }
     }
     
-    public void deleteDepartment(int departmentId) throws SQLException{
-        String deleteEmployeeProjectLinks = 
+    public void deleteDepartment(int departmentId) throws SQLException {
+        String deleteEmployeeProjectLinks =
             "DELETE FROM Employee_Project WHERE employee_id IN " +
             "(SELECT id FROM Employee WHERE department_id = ?)";
-        String deleteEmployeeLinks = "DELETE FROM Employee WHERE department_id = ?";
-        String deleteDepartment = "DELETE FROM Department WHERE id = ?";
+        String deleteEmployeeLinks      = "DELETE FROM Employee WHERE department_id = ?";
+        String deleteProjectDeptLinks   = "DELETE FROM Project_Department WHERE department_id = ?";
+        String deleteDepartment         = "DELETE FROM Department WHERE id = ?";
 
-        try(
+        //try setting up connection
+        try (
             Connection connection = getConnection();
             PreparedStatement stmt1 = connection.prepareStatement(deleteEmployeeProjectLinks);
-        PreparedStatement stmt2 = connection.prepareStatement(deleteEmployeeLinks);
-        PreparedStatement stmt3 = connection.prepareStatement(deleteDepartment);
+            PreparedStatement stmt2 = connection.prepareStatement(deleteEmployeeLinks);
+            PreparedStatement stmt3 = connection.prepareStatement(deleteProjectDeptLinks);
+            PreparedStatement stmt4 = connection.prepareStatement(deleteDepartment)
         ) {
-            //remove connections from table
+            //execute deletion of all the links
             stmt1.setInt(1, departmentId);
             stmt1.executeUpdate();
 
-            //remove department itself
             stmt2.setInt(1, departmentId);
             stmt2.executeUpdate();
 
             stmt3.setInt(1, departmentId);
-            int rowsAffected = stmt3.executeUpdate();
+            stmt3.executeUpdate();
 
-            if(rowsAffected == 0){
+            stmt4.setInt(1, departmentId);
+            int rowsAffected = stmt4.executeUpdate();
+
+            if (rowsAffected == 0) {
                 throw new SQLException("Delete failed — no department found with id: " + departmentId);
             }
         }
-
     }
 
     public Department findDepartmentByEmployee(int employeeId) throws SQLException{
@@ -182,14 +187,15 @@ public class DepartmentRepository extends Repository{
     }
 
     public List<Department> findDepartmentsByProject(int projectId) throws SQLException {
+        //using project department
         String sql = """
-                SELECT DISTINCT d.*
+                SELECT d.*
                 FROM Department d
-                JOIN Employee e ON e.department_id = d.id
-                JOIN Employee_Project ep ON ep.employee_id = e.id
-                WHERE ep.project_id = ?
+                JOIN Project_Department pd ON pd.department_id = d.id
+                WHERE pd.project_id = ?
                 """;
 
+        //department list
         List<Department> departments = new ArrayList<>();
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
@@ -199,10 +205,11 @@ public class DepartmentRepository extends Repository{
                     departments.add(mapRowToDepartment(rs));
                 }
             }
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
         }
+
         return departments;
-    } 
+    }
 
 }
