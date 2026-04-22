@@ -1,11 +1,11 @@
-CREATE TABLE Department (
+CREATE TABLE IF NOT EXISTS Department (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     city VARCHAR(100),
     annual_budget DECIMAL(15,2)
 );
 
-CREATE TABLE Client (
+CREATE TABLE IF NOT EXISTS Client (
     id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     industry VARCHAR(100),
@@ -14,7 +14,7 @@ CREATE TABLE Client (
     primary_contact_email VARCHAR(150)
 );
 
-CREATE TABLE Employee (
+CREATE TABLE IF NOT EXISTS Employee (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
@@ -25,7 +25,7 @@ CREATE TABLE Employee (
     FOREIGN KEY (department_id) REFERENCES Department(id)
 );
 
-CREATE TABLE Project (
+CREATE TABLE IF NOT EXISTS Project (
     id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     description TEXT,
@@ -36,7 +36,7 @@ CREATE TABLE Project (
     CHECK (status IN ('complete', 'active', 'unassigned'))
 );
 
-CREATE TABLE Employee_Project (
+CREATE TABLE IF NOT EXISTS Employee_Project (
     employee_id INT,
     project_id INT,
     PRIMARY KEY (employee_id, project_id),
@@ -44,7 +44,7 @@ CREATE TABLE Employee_Project (
     FOREIGN KEY (project_id) REFERENCES Project(id)
 );
 
-CREATE TABLE Client_Project (
+CREATE TABLE IF NOT EXISTS Client_Project (
     client_id INT,
     project_id INT,
     PRIMARY KEY (client_id, project_id),

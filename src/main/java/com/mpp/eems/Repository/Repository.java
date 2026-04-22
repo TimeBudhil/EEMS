@@ -13,4 +13,8 @@ public class Repository {
             System.err.println(e.getMessage());
         }
     }
+
+    public Connection getConnection() {
+        return connection;
+    }
 }
