@@ -1,9 +1,7 @@
 package com.mpp.eems.Services;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -43,7 +41,9 @@ public class ProjectService extends Services{
 
         //incomplete, need to implement getAllocationPercentage!
         for(Employee e : employees){    
-            // totalCost += e.getSalary() / 12 * months * e.getAllocationPercentage(projectId)/100;
+            //gets the percentage of work that employee did for that specific project, multiplied by that project
+            double allocationPercentage = empProjRepo.calculateEmployeePercentageHours(e.getId(), projectId);
+            totalCost += (e.getSalary() / 12.0) * months * (allocationPercentage / 100.0);
         }
         //For every employee assigned to the project, calculate their weighted cost:
         //e.salary/12 * months * allocationpercentage/100

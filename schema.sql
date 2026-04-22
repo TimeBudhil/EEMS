@@ -33,12 +33,14 @@ CREATE TABLE IF NOT EXISTS Project (
     end_date DATE,
     total_budget DECIMAL(15,2),
     status VARCHAR(20),
+    estimated_duration_hours DECIMAL(8,2),
     CHECK (status IN ('complete', 'active', 'unassigned'))
 );
 
 CREATE TABLE IF NOT EXISTS Employee_Project (
     employee_id INT,
     project_id INT,
+    hours_allocated DECIMAL(6,2) NOT NULL,
     PRIMARY KEY (employee_id, project_id),
     FOREIGN KEY (employee_id) REFERENCES Employee(id),
     FOREIGN KEY (project_id) REFERENCES Project(id)

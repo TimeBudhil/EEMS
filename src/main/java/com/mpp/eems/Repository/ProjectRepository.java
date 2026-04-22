@@ -22,27 +22,28 @@ public class ProjectRepository extends Repository {
         LocalDate startDate = rs.getObject("start_date", LocalDate.class);
         LocalDate endDate = rs.getObject("end_date", LocalDate.class);
 
+        double estimatedDurationHours = rs.getDouble("estimated_duration_hours");
         double totalBudget = rs.getDouble("total_budget");
-        Status status = Status.valueOf(rs.getString("status"));
+        Status status = Status.valueOf(rs.getString("status").toUpperCase());
 
-        Project p = new Project(id, name, description, startDate, endDate, totalBudget, status, new ArrayList<>(), new ArrayList<>());
-
+        Project p = new Project(id, name, description, startDate, endDate, estimatedDurationHours, totalBudget, status, new ArrayList<>(), new ArrayList<>());
         return p;
     }
 
     public Project addProject(Project project) throws SQLException {
         String sql = """
-                INSERT INTO Project (name, description, start_date, end_date, total_budget, status)
-                VALUES (?, ?, ?, ?, ?, ?)
-                """;
+            INSERT INTO Project (name, description, start_date, end_date, estimated_duration_hours, total_budget, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """;
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, project.getName());
             stmt.setString(2, project.getDescription());
-            stmt.setObject(3, project.getStartDate());   // LocalDate maps cleanly via setObject
+            stmt.setObject(3, project.getStartDate());
             stmt.setObject(4, project.getEndDate());
-            stmt.setDouble(5, project.getTotalBudget());
-            stmt.setString(6, project.getStatus().name().toLowerCase());
+            stmt.setDouble(5, project.getEstimatedDurationHours());
+            stmt.setDouble(6, project.getTotalBudget());
+            stmt.setString(7, project.getStatus().name().toLowerCase());
 
             stmt.executeUpdate();
 
@@ -56,6 +57,7 @@ public class ProjectRepository extends Repository {
                         project.getDescription(),
                         project.getStartDate(),
                         project.getEndDate(),
+                        project.getEstimatedDurationHours(),
                         project.getTotalBudget(),
                         project.getStatus(),
                         new ArrayList<>(),
@@ -156,24 +158,26 @@ public class ProjectRepository extends Repository {
     
     public void modifyProject(Project project) throws SQLException {
         String sql = """
-                UPDATE Project
-                SET name        = ?,
-                    description = ?,
-                    start_date  = ?,
-                    end_date    = ?,
-                    total_budget = ?,
-                    status      = ?
-                WHERE id = ?
-                """;
+            UPDATE Project
+            SET name                     = ?,
+                description              = ?,
+                start_date               = ?,
+                end_date                 = ?,
+                estimated_duration_hours = ?,
+                total_budget             = ?,
+                status                   = ?
+            WHERE id = ?
+            """;
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setString(1, project.getName());
             stmt.setString(2, project.getDescription());
             stmt.setObject(3, project.getStartDate());
             stmt.setObject(4, project.getEndDate());
-            stmt.setDouble(5, project.getTotalBudget());
-            stmt.setString(6, project.getStatus().name().toLowerCase());
-            stmt.setInt(7, project.getId());            // WHERE clause — must be last
+            stmt.setDouble(5, project.getEstimatedDurationHours());
+            stmt.setDouble(6, project.getTotalBudget());
+            stmt.setString(7, project.getStatus().name().toLowerCase());
+            stmt.setInt(8, project.getId());
 
             int rowsAffected = stmt.executeUpdate();
 

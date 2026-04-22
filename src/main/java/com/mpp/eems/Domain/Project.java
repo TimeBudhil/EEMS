@@ -9,6 +9,7 @@ public class Project{
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
+    private double estimatedDurationHours;
     private double totalBudget;
     private Status status;
 
@@ -19,12 +20,13 @@ public class Project{
     //derived association
     private List<Department> departments; //completed by, can be gained by getting employees'departments!
 
-    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, double totalBudget, Status status, List<Employee> employees, List<Client> clients) {
+    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, double estimatedDurationHours, double totalBudget, Status status, List<Employee> employees, List<Client> clients) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.estimatedDurationHours = estimatedDurationHours;
         this.totalBudget = totalBudget;
         this.status = status;
         this.employees = employees;
@@ -65,6 +67,10 @@ public class Project{
 
     public List<Client> getClients() {
         return clients;
+    }
+    
+    public double getEstimatedDurationHours() {
+        return estimatedDurationHours;
     }
 
     

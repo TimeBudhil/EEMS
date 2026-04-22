@@ -75,13 +75,13 @@ public class Controller {
         System.out.println("✔ Employees created");
 
         // ── 3. CREATE PROJECTS ────────────────────────────────────────────────
-        Project p1 = projRepo.addProject(new Project(0, "Platform Redesign",      "Full overhaul of core platform",       LocalDate.of(2024, 1, 1),  LocalDate.of(2024, 12, 31), 500000, Status.ACTIVE,      null, null));
-        Project p2 = projRepo.addProject(new Project(0, "Mobile App Launch",      "iOS and Android app development",      LocalDate.of(2024, 3, 1),  LocalDate.of(2024, 9, 30),  320000, Status.ACTIVE,      null, null));
-        Project p3 = projRepo.addProject(new Project(0, "Brand Refresh",          "Company-wide rebranding initiative",   LocalDate.of(2024, 2, 1),  LocalDate.of(2024, 6, 30),  150000, Status.COMPLETE,    null, null));
-        Project p4 = projRepo.addProject(new Project(0, "Data Pipeline Upgrade",  "Migrate to new data infrastructure",   LocalDate.of(2024, 4, 1),  LocalDate.of(2024, 10, 31), 280000, Status.ACTIVE,      null, null));
-        Project p5 = projRepo.addProject(new Project(0, "HR Portal",              "Internal HR self-service portal",      LocalDate.of(2024, 5, 1),  LocalDate.of(2024, 11, 30), 120000, Status.UNASSIGNED,  null, null));
-        Project p6 = projRepo.addProject(new Project(0, "Client Analytics Dashboard","Real-time reporting for clients",   LocalDate.of(2024, 1, 15), LocalDate.of(2024, 8, 15),  210000, Status.ACTIVE,      null, null));
-        Project p7 = projRepo.addProject(new Project(0, "Supply Chain Automation", "Automate ops supply chain workflows", LocalDate.of(2024, 6, 1),  LocalDate.of(2025, 3, 31),  390000, Status.ACTIVE,      null, null));
+        Project p1 = projRepo.addProject(new Project(0, "Platform Redesign",      "Full overhaul of core platform",       LocalDate.of(2024, 1, 1),  LocalDate.of(2024, 12, 31), 15, 500000, Status.ACTIVE,      null, null));
+        Project p2 = projRepo.addProject(new Project(0, "Mobile App Launch",      "iOS and Android app development",      LocalDate.of(2024, 3, 1),  LocalDate.of(2024, 9, 30),  20, 320000, Status.ACTIVE,      null, null));
+        Project p3 = projRepo.addProject(new Project(0, "Brand Refresh",          "Company-wide rebranding initiative",   LocalDate.of(2024, 2, 1),  LocalDate.of(2024, 6, 30), 30,  150000, Status.COMPLETE,    null, null));
+        Project p4 = projRepo.addProject(new Project(0, "Data Pipeline Upgrade",  "Migrate to new data infrastructure",   LocalDate.of(2024, 4, 1),  LocalDate.of(2024, 10, 31),125,  280000, Status.ACTIVE,      null, null));
+        Project p5 = projRepo.addProject(new Project(0, "HR Portal",              "Internal HR self-service portal",      LocalDate.of(2024, 5, 1),  LocalDate.of(2024, 11, 30),5,  120000, Status.UNASSIGNED,  null, null));
+        Project p6 = projRepo.addProject(new Project(0, "Client Analytics Dashboard","Real-time reporting for clients",   LocalDate.of(2024, 1, 15), LocalDate.of(2024, 8, 15), 25,  210000, Status.ACTIVE,      null, null));
+        Project p7 = projRepo.addProject(new Project(0, "Supply Chain Automation", "Automate ops supply chain workflows", LocalDate.of(2024, 6, 1),  LocalDate.of(2025, 3, 31), 125,  390000, Status.ACTIVE,      null, null));
 
         System.out.println("✔ Projects created");
 
