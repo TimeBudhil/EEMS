@@ -6,36 +6,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectDepartmentRepository extends Repository{
-    public void linkDepartment(int projectId, int departmentId) throws SQLException {
-        String sql = "INSERT INTO Project_Department (project_id, department_id) VALUES (?, ?)";
+public class EmployeeProjectRepository extends Repository {
+
+    public void linkEmployee(int projectId, int employeeId) throws SQLException {
+        String sql = "INSERT INTO Employee_Project (project_id, employee_id) VALUES (?, ?)";
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setInt(1, projectId);
-            stmt.setInt(2, departmentId);
+            stmt.setInt(2, employeeId);
             stmt.executeUpdate();
         }
     }
 
-    public void unlinkDepartment(int projectId, int departmentId) throws SQLException {
-        String sql = "DELETE FROM Project_Department WHERE project_id = ? AND department_id = ?";
+    public void unlinkEmployee(int projectId, int employeeId) throws SQLException {
+        String sql = "DELETE FROM Employee_Project WHERE project_id = ? AND employee_id = ?";
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setInt(1, projectId);
-            stmt.setInt(2, departmentId);
+            stmt.setInt(2, employeeId);
             stmt.executeUpdate();
         }
     }
 
-    public List<Integer> findDepartmentIdsByProject(int projectId) {
-        String sql = "SELECT department_id FROM Project_Department WHERE project_id = ?";
+    public List<Integer> findEmployeeIdsByProject(int projectId) {
+        String sql = "SELECT employee_id FROM Employee_Project WHERE project_id = ?";
         List<Integer> ids = new ArrayList<>();
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setInt(1, projectId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    ids.add(rs.getInt("department_id"));
+                    ids.add(rs.getInt("employee_id"));
                 }
             }
         } catch (SQLException e) {
@@ -45,12 +46,12 @@ public class ProjectDepartmentRepository extends Repository{
         return ids;
     }
 
-    public List<Integer> findProjectIdsByDepartment(int departmentId) {
-        String sql = "SELECT project_id FROM Project_Department WHERE department_id = ?";
+    public List<Integer> findProjectIdsByEmployee(int employeeId) {
+        String sql = "SELECT project_id FROM Employee_Project WHERE employee_id = ?";
         List<Integer> ids = new ArrayList<>();
 
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, departmentId);
+            stmt.setInt(1, employeeId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     ids.add(rs.getInt("project_id"));
@@ -62,6 +63,4 @@ public class ProjectDepartmentRepository extends Repository{
 
         return ids;
     }
-
-    
 }
