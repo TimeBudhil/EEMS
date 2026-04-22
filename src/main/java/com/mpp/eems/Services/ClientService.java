@@ -1,12 +1,13 @@
 package com.mpp.eems.Services;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.mpp.eems.Domain.Client;
-import com.mpp.eems.Domain.Project;
+import com.mpp.eems.Repository.ClientProjectRepository;
 import com.mpp.eems.Repository.ClientRepository;
+import com.mpp.eems.Repository.ProjectRepository;
 
 public class ClientService  extends Services{
 
@@ -42,19 +43,34 @@ public class ClientService  extends Services{
         clientrepo.deleteClient(client.getId());
     }
 
+    public List<Client> findAllClients(){
+        return clientrepo.findAllClient();
+    }
 
 
     //lists all clients where their projects have currentDate - project.deadline < daysUntilDeadline
-    public static List<Client> findClientsByUpcomingProjectDeadline(int daysUntilDeadline){
+    public List<Client> findClientsByUpcomingProjectDeadline(int daysUntilDeadline){
         //Get Clients[] using repository
-        List<Project> projects = new ArrayList<>();  //TEMPORARY 
-        List<Client> clients = new ArrayList<>(); //TEMPORARY WHILE REPO LAYER IS GETTING WORKED ON
-        
-        // return Arrays.stream(projects)
-        //     .filter(p -> LocalDate.now() - p.getDeadline() < daysUntilDeadline)
-        //     .flatMap(p -> p.getClients())
-        //     .distinct().
-        return clients;
+        List<Client> clients = findAllClients();
+        ClientProjectRepository cpr = new ClientProjectRepository();
+        ProjectRepository pr = new ProjectRepository();
+        return clients.stream()
+            .filter(c -> cpr.findProjectIdsByClient(c.getId()).stream()
+                        .anyMatch(p -> 
+                            {
+                                try {
+                                    return pr.findProjectById(p)
+                                    .getEndDate()
+                                    .isAfter(LocalDate.now().minusDays(daysUntilDeadline));
+                                } catch (SQLException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+                                
+                                //in case it didn't work out
+                                return false;
+                            }))
+            .toList();
     }
 
 }
