@@ -1,12 +1,22 @@
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS Department (
     id SERIAL PRIMARY KEY,
+=======
+CREATE TABLE Department (
+    id INT PRIMARY KEY,
+>>>>>>> 366db5ae6d5f65618702d353ed4cdad7686b91c9
     name VARCHAR(100) NOT NULL,
     city VARCHAR(100),
     annual_budget DECIMAL(15,2)
 );
 
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS Client (
     id SERIAL PRIMARY KEY,
+=======
+CREATE TABLE Client (
+    id INT PRIMARY KEY,
+>>>>>>> 366db5ae6d5f65618702d353ed4cdad7686b91c9
     name VARCHAR(150) NOT NULL,
     industry VARCHAR(100),
     primary_contact_name VARCHAR(150),
@@ -14,8 +24,13 @@ CREATE TABLE IF NOT EXISTS Client (
     primary_contact_email VARCHAR(150)
 );
 
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS Employee (
     id SERIAL PRIMARY KEY,
+=======
+CREATE TABLE Employee (
+    id INT SERIAL PRIMARY KEY,
+>>>>>>> 366db5ae6d5f65618702d353ed4cdad7686b91c9
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     title VARCHAR(100),
@@ -25,8 +40,13 @@ CREATE TABLE IF NOT EXISTS Employee (
     FOREIGN KEY (department_id) REFERENCES Department(id)
 );
 
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS Project (
     id SERIAL PRIMARY KEY,
+=======
+CREATE TABLE Project (
+    id INT PRIMARY KEY,
+>>>>>>> 366db5ae6d5f65618702d353ed4cdad7686b91c9
     name VARCHAR(150) NOT NULL,
     description TEXT,
     start_date DATE,
@@ -50,4 +70,4 @@ CREATE TABLE IF NOT EXISTS Client_Project (
     PRIMARY KEY (client_id, project_id),
     FOREIGN KEY (client_id) REFERENCES Client(id),
     FOREIGN KEY (project_id) REFERENCES Project(id)
-);
+);s

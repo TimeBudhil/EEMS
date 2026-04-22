@@ -17,8 +17,7 @@ public class ClientService  extends Services{
         // return Arrays.stream(projects)
         //     .filter(p -> LocalDate.now() - p.getDeadline() < daysUntilDeadline)
         //     .flatMap(p -> p.getClients())
-        //     .distinct()
-        //     .collect(Collectors.toList());
+        //     .distinct().
         return clients;
     }
 
