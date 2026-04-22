@@ -26,22 +26,17 @@ public class  ClientRepository extends Repository{
 
 
     public Client addClient(Client client) throws SQLException {
+        String sql = "INSERT INTO client (name, industry, primary_contact_name, primary_contact_phone, primary_contact_email) VALUES (?, ?, ?, ?, ?)";
 
-        String sql = "INSERT INTO client (id, name, industry, primary_contact_name, primary_contact_phone, primary_contact_email) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, client.getName());
+            pstmt.setString(2, client.getIndustry());
+            pstmt.setString(3, client.getPrimaryContactName());
+            pstmt.setString(4, client.getPrimaryContactPhone());
+            pstmt.setString(5, client.getPrimaryContactEmail());
 
-        try (PreparedStatement pstmt = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS) ) {
-            pstmt.setInt(1, client.getId());
-            pstmt.setString(2, client.getName());
-            pstmt.setString(3, client.getIndustry());
-            pstmt.setString(4, client.getPrimaryContactName());
-            pstmt.setString(5, client.getPrimaryContactPhone());
-            pstmt.setString(6, client.getPrimaryContactEmail());
-//            pstmt.
+            pstmt.executeUpdate();
 
-            if( pstmt.execute() )
-                System.out.println("Client added successfully!");
-
-            // Retrieve the Client-generated id and return a complete Project
             try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int generatedId = generatedKeys.getInt(1);
@@ -56,13 +51,11 @@ public class  ClientRepository extends Repository{
                     );
                 }
             }
-
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        throw new SQLException("Insert failed");
+        throw new SQLException("Insert failed — no ID returned");
     }
 
     public Client findClient(int id) {
@@ -123,14 +116,18 @@ public class  ClientRepository extends Repository{
     }
 
     public void deleteClient(int id) {
-        String sql = "DELETE FROM client WHERE id = ?";
+        String deleteProjectLinks = "DELETE FROM Client_Project WHERE client_id = ?";
+        String deleteClient       = "DELETE FROM client WHERE id = ?";
 
-        try (PreparedStatement pstmt = getConnection().prepareStatement(sql)) {
+        try (
+            PreparedStatement stmt1 = getConnection().prepareStatement(deleteProjectLinks);
+            PreparedStatement stmt2 = getConnection().prepareStatement(deleteClient)
+        ) {
+            stmt1.setInt(1, id);
+            stmt1.executeUpdate();
 
-            pstmt.setInt(1, id);
-
-            if ( pstmt.execute() )
-                System.out.println("Client deleted!");
+            stmt2.setInt(1, id);
+            stmt2.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
