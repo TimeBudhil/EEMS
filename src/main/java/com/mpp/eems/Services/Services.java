@@ -13,12 +13,4 @@ import com.mpp.eems.Repository.ProjectRepository;
  * so that child classes can use repository functionality without having to update their fields!
  */
 public class Services {
-    protected final ProjectRepository projectRepository = new ProjectRepository();
-    protected final ClientProjectRepository clientProjectRepository = new ClientProjectRepository();
-    protected final ProjectDepartmentRepository projectDepartmentRepository = new ProjectDepartmentRepository();
-    protected final EmployeeProjectRepository employeeProjectRepository = new EmployeeProjectRepository();
-    protected final EmployeeRepository employeeRepository = new EmployeeRepository();
-    protected final EmployeeService employeeService = new EmployeeService();
-    protected  final DepartmentRepository departmentRepository = new DepartmentRepository();
-    protected  final ClientRepository clientRepository = new ClientRepository();
 }

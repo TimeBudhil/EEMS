@@ -16,6 +16,9 @@ import com.mpp.eems.Repository.ProjectRepository;
  * it uses the repository to implement CRUD operations of clients and all its relationships
  */
 public class ClientService extends Services {
+    protected  final ClientRepository clientRepository = new ClientRepository();
+    protected final ProjectRepository projectRepository = new ProjectRepository();
+    protected final ClientProjectRepository clientProjectRepository = new ClientProjectRepository();
 
 
     // ── CRUD ──────────────────────────────────────────────────────────────────

@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.mpp.eems.Domain.Department;
+import com.mpp.eems.Repository.DepartmentRepository;
+import com.mpp.eems.Repository.ProjectDepartmentRepository;
 
 /**
  * department service — CRUD operations for departments
@@ -11,6 +13,8 @@ import com.mpp.eems.Domain.Department;
  * 
  */
 public class DepartmentService extends Services  {
+    protected final ProjectDepartmentRepository projectDepartmentRepository = new ProjectDepartmentRepository();
+    protected  final DepartmentRepository departmentRepository = new DepartmentRepository();
 
     // ── CRUD ──────────────────────────────────────────────────────────────────
 

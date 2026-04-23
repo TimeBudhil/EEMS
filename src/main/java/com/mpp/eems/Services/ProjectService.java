@@ -6,6 +6,8 @@ import java.util.List;
 import com.mpp.eems.Domain.Employee;
 import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Repository.ClientProjectRepository;
+import com.mpp.eems.Repository.ClientRepository;
+import com.mpp.eems.Repository.DepartmentRepository;
 import com.mpp.eems.Repository.EmployeeProjectRepository;
 import com.mpp.eems.Repository.EmployeeRepository;
 import com.mpp.eems.Repository.ProjectDepartmentRepository;
@@ -18,7 +20,15 @@ import com.mpp.eems.Repository.ProjectRepository;
  */
 public class ProjectService extends Services {
 
-
+    protected final ProjectRepository projectRepository = new ProjectRepository(); 
+    protected  final ClientRepository clientRepository = new ClientRepository();
+    protected final ClientProjectRepository clientProjectRepository = new ClientProjectRepository();
+    protected final ProjectDepartmentRepository projectDepartmentRepository = new ProjectDepartmentRepository();
+    protected final EmployeeProjectRepository employeeProjectRepository = new EmployeeProjectRepository();
+    protected final EmployeeRepository employeeRepository = new EmployeeRepository();
+    protected final EmployeeService employeeService = new EmployeeService();
+    protected  final DepartmentRepository departmentRepository = new DepartmentRepository(); 
+    
     // ── CRUD ──────────────────────────────────────────────────────────────────
 
     public List<Project> getAllProjects() {

@@ -15,9 +15,11 @@ import com.mpp.eems.Repository.ProjectRepository;
  * uses employee, employee_project, project and department repositories to establish links, create, and find!
  */
 public class EmployeeService extends Services {
-
-
-    // ── CRUD ──────────────────────────────────────────────────────────────────
+    protected final EmployeeRepository employeeRepository = new EmployeeRepository();
+    protected  final DepartmentRepository departmentRepository = new DepartmentRepository();
+    protected final ProjectRepository projectRepository = new ProjectRepository();
+    protected final EmployeeProjectRepository employeeProjectRepository = new EmployeeProjectRepository();
+     // ── CRUD ──────────────────────────────────────────────────────────────────
 
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
