@@ -78,14 +78,25 @@ public class Controller {
         System.out.println("✔ Employees created");
 
         // ── 3. CREATE PROJECTS ────────────────────────────────────────────────
-        Project p1 = projRepo.addProject(new Project(0, "Platform Redesign",      "Full overhaul of core platform",       LocalDate.of(2024, 1, 1),  LocalDate.of(2024, 12, 31), 15, 500000, Status.ACTIVE,      null, null));
-        Project p2 = projRepo.addProject(new Project(0, "Mobile App Launch",      "iOS and Android app development",      LocalDate.of(2024, 3, 1),  LocalDate.of(2024, 9, 30),  20, 320000, Status.ACTIVE,      null, null));
-        Project p3 = projRepo.addProject(new Project(0, "Brand Refresh",          "Company-wide rebranding initiative",   LocalDate.of(2024, 2, 1),  LocalDate.of(2024, 6, 30), 30,  150000, Status.COMPLETE,    null, null));
-        Project p4 = projRepo.addProject(new Project(0, "Data Pipeline Upgrade",  "Migrate to new data infrastructure",   LocalDate.of(2024, 4, 1),  LocalDate.of(2024, 10, 31),125,  280000, Status.ACTIVE,      null, null));
-        Project p5 = projRepo.addProject(new Project(0, "HR Portal",              "Internal HR self-service portal",      LocalDate.of(2024, 5, 1),  LocalDate.of(2024, 11, 30),5,  120000, Status.UNASSIGNED,  null, null));
-        Project p6 = projRepo.addProject(new Project(0, "Client Analytics Dashboard","Real-time reporting for clients",   LocalDate.of(2024, 1, 15), LocalDate.of(2024, 8, 15), 25,  210000, Status.ACTIVE,      null, null));
-        Project p7 = projRepo.addProject(new Project(0, "Supply Chain Automation", "Automate ops supply chain workflows", LocalDate.of(2024, 6, 1),  LocalDate.of(2025, 3, 31), 125,  390000, Status.ACTIVE,      null, null));
+        Project p1 = projRepo.addProject(new Project(0, "Platform Redesign",         "...", LocalDate.of(2024,1,1),  LocalDate.of(2024,12,31), 500,  500000, Status.ACTIVE,     null, null));
+        Project p2 = projRepo.addProject(new Project(0, "Mobile App Launch",         "...", LocalDate.of(2024,3,1),  LocalDate.of(2024,9,30),  320,  320000, Status.ACTIVE,     null, null));
+        Project p3 = projRepo.addProject(new Project(0, "Brand Refresh",             "...", LocalDate.of(2024,2,1),  LocalDate.of(2024,6,30),  150,  150000, Status.COMPLETE,   null, null));
+        Project p4 = projRepo.addProject(new Project(0, "Data Pipeline Upgrade",     "...", LocalDate.of(2024,4,1),  LocalDate.of(2024,10,31), 280,  280000, Status.ACTIVE,     null, null));
+        Project p5 = projRepo.addProject(new Project(0, "HR Portal",                 "...", LocalDate.of(2024,5,1),  LocalDate.of(2024,11,30), 120,  120000, Status.UNASSIGNED, null, null));
+        Project p6 = projRepo.addProject(new Project(0, "Client Analytics Dashboard","...", LocalDate.of(2024,1,15), LocalDate.of(2024,8,15),  210,  210000, Status.ACTIVE,     null, null));
+        Project p7 = projRepo.addProject(new Project(0, "Supply Chain Automation",   "...", LocalDate.of(2024,6,1),  LocalDate.of(2025,3,31),  390,  390000, Status.ACTIVE,     null, null));
 
+        // After seeding, update p2 to end soon (within 30 days):
+        p2 = new Project(p2.getId(), p2.getName(), p2.getDescription(),
+            p2.getStartDate(), LocalDate.now().plusDays(20),
+            p2.getEstimatedDurationHours(), p2.getTotalBudget(), p2.getStatus(), null, null);
+        projRepo.modifyProject(p2);
+
+        // p7 ends in ~200 days:
+        p7 = new Project(p7.getId(), p7.getName(), p7.getDescription(),
+            p7.getStartDate(), LocalDate.now().plusDays(200),
+            p7.getEstimatedDurationHours(), p7.getTotalBudget(), p7.getStatus(), null, null);
+        projRepo.modifyProject(p7);
         System.out.println("✔ Projects created");
 
         // ── 4. CREATE CLIENTS ─────────────────────────────────────────────────
@@ -142,6 +153,52 @@ public class Controller {
         empProjRepo.linkEmployee(p7.getId(), vera.getId());
         empProjRepo.linkEmployee(p7.getId(), will.getId());
         empProjRepo.linkEmployee(p7.getId(), alice.getId());
+
+        // Platform Redesign (500h total)
+        empProjRepo.assignProjectToEmployee(alice.getId(),  p1.getId(), 150);
+        empProjRepo.assignProjectToEmployee(bob.getId(),    p1.getId(), 100);
+        empProjRepo.assignProjectToEmployee(frank.getId(),  p1.getId(), 150);
+        empProjRepo.assignProjectToEmployee(liam.getId(),   p1.getId(), 50);
+        empProjRepo.assignProjectToEmployee(olivia.getId(), p1.getId(), 50);
+
+        // Mobile App Launch (320h total)
+        empProjRepo.assignProjectToEmployee(carol.getId(),  p2.getId(), 80);
+        empProjRepo.assignProjectToEmployee(david.getId(),  p2.getId(), 80);
+        empProjRepo.assignProjectToEmployee(eve.getId(),    p2.getId(), 60);
+        empProjRepo.assignProjectToEmployee(mia.getId(),    p2.getId(), 60);
+        empProjRepo.assignProjectToEmployee(noah.getId(),   p2.getId(), 40);
+
+        // Brand Refresh (150h total)
+        empProjRepo.assignProjectToEmployee(grace.getId(),  p3.getId(), 40);
+        empProjRepo.assignProjectToEmployee(henry.getId(),  p3.getId(), 30);
+        empProjRepo.assignProjectToEmployee(karen.getId(),  p3.getId(), 30);
+        empProjRepo.assignProjectToEmployee(liam.getId(),   p3.getId(), 25);
+        empProjRepo.assignProjectToEmployee(olivia.getId(), p3.getId(), 25);
+
+        // Data Pipeline Upgrade (280h total)
+        empProjRepo.assignProjectToEmployee(alice.getId(),  p4.getId(), 100);
+        empProjRepo.assignProjectToEmployee(frank.getId(),  p4.getId(), 80);
+        empProjRepo.assignProjectToEmployee(sam.getId(),    p4.getId(), 60);
+        empProjRepo.assignProjectToEmployee(tina.getId(),   p4.getId(), 40);
+
+        // HR Portal (120h total)
+        empProjRepo.assignProjectToEmployee(peter.getId(),  p5.getId(), 40);
+        empProjRepo.assignProjectToEmployee(quinn.getId(),  p5.getId(), 30);
+        empProjRepo.assignProjectToEmployee(bob.getId(),    p5.getId(), 30);
+        empProjRepo.assignProjectToEmployee(carol.getId(),  p5.getId(), 20);
+
+        // Client Analytics Dashboard (210h total)
+        empProjRepo.assignProjectToEmployee(frank.getId(),  p6.getId(), 70);
+        empProjRepo.assignProjectToEmployee(eve.getId(),    p6.getId(), 60);
+        empProjRepo.assignProjectToEmployee(jack.getId(),   p6.getId(), 50);
+        empProjRepo.assignProjectToEmployee(isla.getId(),   p6.getId(), 30);
+
+        // Supply Chain Automation (390h total)
+        empProjRepo.assignProjectToEmployee(sam.getId(),    p7.getId(), 100);
+        empProjRepo.assignProjectToEmployee(umar.getId(),   p7.getId(), 80);
+        empProjRepo.assignProjectToEmployee(vera.getId(),   p7.getId(), 80);
+        empProjRepo.assignProjectToEmployee(will.getId(),   p7.getId(), 70);
+        empProjRepo.assignProjectToEmployee(alice.getId(),  p7.getId(), 60);
 
         System.out.println("✔ Employee-Project links created");
 
