@@ -62,7 +62,7 @@ public class ServiceTestController {
 
         // ── Task 3: High-Value Client Identification ───────────────────────
         System.out.println("\n── Task 3: Clients with deadline within N days ───");
-        int[] deadlineWindows = {30, 180, 365};
+        int[] deadlineWindows = {1, 180, 10000};
         for (int days : deadlineWindows) {
             List<Client> clients = clientService.findClientsByUpcomingProjectDeadline(days);
             System.out.printf("  Within %3d days: %s%n", days,

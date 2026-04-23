@@ -82,9 +82,17 @@ public class ClientService {
             for (int projectId : projectIds) {
                 try {
                     Project project = projectRepository.findProjectById(projectId);
-                    if (project != null && !project.getEndDate().isAfter(cutoff)) {
-                        result.add(client);
-                        break; // only add client once
+                    LocalDate today = LocalDate.now();
+
+                    if (project != null) {
+                        LocalDate end = project.getEndDate();
+
+                        if ((end.isEqual(today) || end.isAfter(today)) &&
+                            (end.isEqual(cutoff) || end.isBefore(cutoff))) {
+                            
+                            result.add(client);
+                            break;
+                        }
                     }
                 } catch (SQLException e) {
                     System.err.println(e.getMessage());
