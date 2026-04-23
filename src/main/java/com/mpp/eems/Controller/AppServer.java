@@ -1,31 +1,25 @@
 package com.mpp.eems.Controller;
 
-import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;
-import com.sun.net.httpserver.HttpServer;
 
-// Import your repositories and services here — adjust to match your actual constructors
-import com.mpp.eems.Repository.*;
-import com.mpp.eems.Services.*;
+import com.mpp.eems.Services.ClientService;
+import com.mpp.eems.Services.DepartmentService;
+import com.mpp.eems.Services.EmployeeService;
+import com.mpp.eems.Services.ProjectService;
+import com.sun.net.httpserver.HttpServer;
 
 public class AppServer {
     public static void start() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 
         // ── Wire up services (inject your real DB/repository instances here) ──
-        EmployeeService employeeService     = new EmployeeService(
-                new EmployeeRepository(), new EmployeeProjectRepository(),
-                new ProjectRepository(),  new DepartmentRepository());
+        EmployeeService employeeService     = new EmployeeService();
 
-        ClientService clientService         = new ClientService(
-                new ClientRepository(), new ClientProjectRepository());
+        ClientService clientService         = new ClientService();
 
-        DepartmentService departmentService = new DepartmentService(
-                new DepartmentRepository(), new ProjectDepartmentRepository());
+        DepartmentService departmentService = new DepartmentService();
 
-        ProjectService projectService       = new ProjectService(
-                new ProjectRepository(), new ClientProjectRepository(),
-                new ProjectDepartmentRepository());
+        ProjectService projectService       = new ProjectService();
 
         // ── Wire up controllers ───────────────────────────────────────────────
         EmployeeController  emp  = new EmployeeController(employeeService);

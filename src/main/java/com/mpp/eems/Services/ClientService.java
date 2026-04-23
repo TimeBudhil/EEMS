@@ -1,22 +1,23 @@
 package com.mpp.eems.Services;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mpp.eems.Domain.Client;
+import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Repository.ClientProjectRepository;
 import com.mpp.eems.Repository.ClientRepository;
-
-import java.sql.SQLException;
-import java.util.List;
+import com.mpp.eems.Repository.ProjectRepository;
 
 public class ClientService {
 
-    private final ClientRepository clientRepository;
-    private final ClientProjectRepository clientProjectRepository;
+    private final ClientRepository clientRepository = new ClientRepository();
+    private final ClientProjectRepository clientProjectRepository = new ClientProjectRepository();
+    private final ProjectRepository projectRepository = new ProjectRepository();
+    
 
-    public ClientService(ClientRepository clientRepository,
-                         ClientProjectRepository clientProjectRepository) {
-        this.clientRepository = clientRepository;
-        this.clientProjectRepository = clientProjectRepository;
-    }
 
     // ── CRUD ──────────────────────────────────────────────────────────────────
 
@@ -68,5 +69,28 @@ public class ClientService {
      */
     public List<Integer> getClientIdsForProject(int projectId) {
         return clientProjectRepository.findClientIdsByProject(projectId);
+    }
+
+    // Task 3: High-Value Client Identification
+    public List<Client> findClientsByUpcomingProjectDeadline(int daysUntilDeadline) {
+        LocalDate cutoff = LocalDate.now().plusDays(daysUntilDeadline);
+        List<Client> allClients = clientRepository.findAllClient();
+        List<Client> result = new ArrayList<>();
+
+        for (Client client : allClients) {
+            List<Integer> projectIds = clientProjectRepository.findProjectIdsByClient(client.getId());
+            for (int projectId : projectIds) {
+                try {
+                    Project project = projectRepository.findProjectById(projectId);
+                    if (project != null && !project.getEndDate().isAfter(cutoff)) {
+                        result.add(client);
+                        break; // only add client once
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+        return result;
     }
 }

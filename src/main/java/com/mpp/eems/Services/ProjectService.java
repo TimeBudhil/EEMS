@@ -1,26 +1,25 @@
 package com.mpp.eems.Services;
 
-import com.mpp.eems.Domain.Project;
-import com.mpp.eems.Repository.ClientProjectRepository;
-import com.mpp.eems.Repository.ProjectDepartmentRepository;
-import com.mpp.eems.Repository.ProjectRepository;
-
 import java.sql.SQLException;
 import java.util.List;
 
+import com.mpp.eems.Domain.Employee;
+import com.mpp.eems.Domain.Project;
+import com.mpp.eems.Repository.ClientProjectRepository;
+import com.mpp.eems.Repository.EmployeeProjectRepository;
+import com.mpp.eems.Repository.EmployeeRepository;
+import com.mpp.eems.Repository.ProjectDepartmentRepository;
+import com.mpp.eems.Repository.ProjectRepository;
+
 public class ProjectService {
 
-    private final ProjectRepository projectRepository;
-    private final ClientProjectRepository clientProjectRepository;
-    private final ProjectDepartmentRepository projectDepartmentRepository;
+    private final ProjectRepository projectRepository = new ProjectRepository();
+    private final ClientProjectRepository clientProjectRepository = new ClientProjectRepository();
+    private final ProjectDepartmentRepository projectDepartmentRepository = new ProjectDepartmentRepository();
+    private final EmployeeProjectRepository employeeProjectRepository = new EmployeeProjectRepository();
+    private final EmployeeRepository employeeRepository = new EmployeeRepository();
+    private final EmployeeService employeeService = new EmployeeService();
 
-    public ProjectService(ProjectRepository projectRepository,
-                          ClientProjectRepository clientProjectRepository,
-                          ProjectDepartmentRepository projectDepartmentRepository) {
-        this.projectRepository = projectRepository;
-        this.clientProjectRepository = clientProjectRepository;
-        this.projectDepartmentRepository = projectDepartmentRepository;
-    }
 
     // ── CRUD ──────────────────────────────────────────────────────────────────
 
@@ -104,5 +103,33 @@ public class ProjectService {
      */
     public List<Integer> getDepartmentIdsForProject(int projectId) {
         return projectDepartmentRepository.findDepartmentIdsByProject(projectId);
+    }
+
+
+    public double calculateProjectHRCost(int projectId) throws SQLException {
+        Project project = projectRepository.findProjectById(projectId);
+        if (project == null) throw new IllegalArgumentException("Project not found: " + projectId);
+
+        // Duration in months, rounded up
+        long days = java.time.temporal.ChronoUnit.DAYS.between(project.getStartDate(), project.getEndDate());
+        int months = (int) Math.ceil(days / 30.0);
+
+        // Get all employees on this project
+        List<Employee> employees = employeeProjectRepository.findEmployeeIdsByProject(projectId).stream().map(eid -> employeeRepository.findById(eid)).toList();
+
+        double totalCost = 0;
+        for (Employee e : employees) {
+            double monthlyRate = e.getSalary() / 12.0;
+            double hoursAllocated = employeeService.getProjectHoursPercentage(e.getId(), projectId);
+            double totalHours = project.getEstimatedDurationHours();
+            double weight = (totalHours > 0) ? hoursAllocated / totalHours : 0;
+            totalCost += monthlyRate * months * weight;
+        }
+        return totalCost;
+    }
+
+
+    public List<Project> getProjectsByDepartment(int departmentId, String sortBy) {
+        return projectRepository.findActiveProjectsByDepartment(departmentId, sortBy);
     }
 }

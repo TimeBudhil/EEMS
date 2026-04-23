@@ -25,17 +25,18 @@ public final class DBConnection {
 
     // static method that creates/returns the singleton
     private static DBConnection getInstance() throws SQLException {
-        //only create a new instance if it doesn' texist..
-        if (instance == null) {
-            instance = new DBConnection(); // constructor is called here
+        if (instance == null || instance.connection.isClosed()) {
+            instance = new DBConnection();
         }
         return instance;
     }
 
     // static method to get the connection directly
     static Connection getConnection() throws SQLException {
-        //gets the connectino of the instance
-        return getInstance().connection;
+        if (instance == null || instance.connection.isClosed()) {
+            instance = new DBConnection(); // opens a fresh connection
+        }
+        return instance.connection;
     }
 
     //testing purpose main 

@@ -1,5 +1,8 @@
 package com.mpp.eems.Services;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import com.mpp.eems.Domain.Employee;
 import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Repository.DepartmentRepository;
@@ -7,24 +10,13 @@ import com.mpp.eems.Repository.EmployeeProjectRepository;
 import com.mpp.eems.Repository.EmployeeRepository;
 import com.mpp.eems.Repository.ProjectRepository;
 
-import java.sql.SQLException;
-import java.util.List;
-
 public class EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
-    private final EmployeeProjectRepository employeeProjectRepository;
-    private final ProjectRepository projectRepository;
-    private final DepartmentRepository departmentRepository;
+    private final EmployeeRepository employeeRepository = new EmployeeRepository();
+    private final EmployeeProjectRepository employeeProjectRepository = new EmployeeProjectRepository();
+    private final ProjectRepository projectRepository = new ProjectRepository();
+    private final DepartmentRepository departmentRepository = new DepartmentRepository();
 
-    public EmployeeService(EmployeeRepository employeeRepository,
-                           EmployeeProjectRepository employeeProjectRepository,
-                           ProjectRepository projectRepository ,DepartmentRepository departmentRepository) {
-        this.employeeRepository = employeeRepository;
-        this.employeeProjectRepository = employeeProjectRepository;
-        this.projectRepository = projectRepository;
-        this.departmentRepository=departmentRepository;
-    }
 
     // ── CRUD ──────────────────────────────────────────────────────────────────
 

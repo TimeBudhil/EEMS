@@ -1,22 +1,16 @@
 package com.mpp.eems.Services;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import com.mpp.eems.Domain.Department;
 import com.mpp.eems.Repository.DepartmentRepository;
 import com.mpp.eems.Repository.ProjectDepartmentRepository;
 
-import java.sql.SQLException;
-import java.util.List;
-
 public class DepartmentService {
 
-    private final DepartmentRepository departmentRepository;
-    private final ProjectDepartmentRepository projectDepartmentRepository;
-
-    public DepartmentService(DepartmentRepository departmentRepository,
-                             ProjectDepartmentRepository projectDepartmentRepository) {
-        this.departmentRepository = departmentRepository;
-        this.projectDepartmentRepository = projectDepartmentRepository;
-    }
+    private final DepartmentRepository departmentRepository = new DepartmentRepository();
+    private final ProjectDepartmentRepository projectDepartmentRepository = new ProjectDepartmentRepository();
 
     // ── CRUD ──────────────────────────────────────────────────────────────────
 
@@ -56,7 +50,7 @@ public class DepartmentService {
         return departmentRepository.findDepartmentsByProject(projectId);
     }
 
-    // ── Project links (Project_Department join table) ─────────────────────────
+        // ── Project links (Project_Department join table) ─────────────────────────
 
     /**
      * Links a department to a project.

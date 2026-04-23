@@ -219,4 +219,39 @@ public class ProjectRepository extends Repository {
         }
     }
 
+    public List<Project> findActiveProjectsByDepartment(int departmentId, String sortBy) {
+        // Whitelist allowed columns to prevent SQL injection
+        String orderColumn = switch (sortBy) {
+            case "total_budget"              -> "p.total_budget";
+            case "end_date"                  -> "p.end_date";
+            case "start_date"                -> "p.start_date";
+            case "estimated_duration_hours"  -> "p.estimated_duration_hours";
+            case "name"                      -> "p.name";
+            default                          -> "p.end_date"; // safe fallback
+        };
+
+        String sql = """
+            SELECT p.*
+            FROM Project p
+            JOIN Project_Department pd ON p.id = pd.project_id
+            WHERE pd.department_id = ?
+            AND p.status = 'active'
+            ORDER BY
+            """ + orderColumn;
+
+        List<Project> projects = new ArrayList<>();
+
+        try {
+            PreparedStatement stmt = getConnection().prepareStatement(sql);
+            stmt.setInt(1, departmentId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                projects.add(mapRowToProject(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return projects;
+    }
 }
