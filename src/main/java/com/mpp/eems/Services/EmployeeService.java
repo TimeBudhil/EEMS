@@ -78,8 +78,6 @@ public class EmployeeService extends Services {
         // both the Employee and Department records. Implement validation to ensure the transfer is
         // possible before committing the changes.
 
-
-
         //update employee to have new department
         Employee e = employeeRepository.findById(employeeId);
         if (e == null) throw new IllegalArgumentException("Employee not found: " + employeeId);
