@@ -1,63 +1,61 @@
 package com.mpp.eems.Controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mpp.eems.Domain.Employee;
+import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Services.EmployeeService;
-import com.sun.net.httpserver.HttpExchange;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class EmployeeController {
 
-    private EmployeeService service = new EmployeeService();
+    private final EmployeeService employeeService;
 
-    public void handle(HttpExchange exchange) throws IOException {
-
-        String method = exchange.getRequestMethod();
-        String path = exchange.getRequestURI().getPath();
-
-        if ("GET".equals(method) && path.equals("/employees")) {
-            send(exchange, service.getAllEmployees().toString());
-        }
-
-        else if ("GET".equals(method) && path.startsWith("/employees/")) {
-            int id = Integer.parseInt(path.split("/")[2]);
-            send(exchange, service.getEmployeeById(id).toString());
-        }
-
-        else if ("POST".equals(method)) {
-            String body = new BufferedReader(new InputStreamReader(exchange.getRequestBody()))
-                    .lines().collect(Collectors.joining());
-
-            // Simple JSON parsing (matches your structure)
-
-
-            ObjectMapper mapper = new ObjectMapper();
-
-            try {
-                Employee emp = mapper.readValue(body, Employee.class);
-                send(exchange, service.createEmployee(emp).toString());
-            } catch (Exception e) {
-                send(exchange, "Invalid JSON format");
-            }
-//            send(exchange, service.createEmployee(emp).toString());
-        }
-
-        else if ("DELETE".equals(method) && path.startsWith("/employees/")) {
-            int id = Integer.parseInt(path.split("/")[2]);
-            service.deleteEmployee(id);
-            send(exchange, "Deleted");
-        }
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
-    private void send(HttpExchange ex, String response) throws IOException {
-        ex.sendResponseHeaders(200, response.length());
-        OutputStream os = ex.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+    // ── CRUD ──────────────────────────────────────────────────────────────────
+
+    public List<Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
+    }
+
+    public Employee getEmployeeById(int id) {
+        return employeeService.getEmployeeById(id);
+    }
+
+    public Employee createEmployee(Employee employee) {
+        return employeeService.createEmployee(employee);
+    }
+
+    public void updateEmployee(Employee employee) {
+        employeeService.updateEmployee(employee);
+    }
+
+    public void deleteEmployee(int id) {
+        employeeService.deleteEmployee(id);
+    }
+
+    // ── Project assignments ───────────────────────────────────────────────────
+
+    public List<Project> getProjectsForEmployee(int employeeId) {
+        return employeeService.getProjectsForEmployee(employeeId);
+    }
+
+    public void assignToProject(int employeeId, int projectId, double hoursAllocated) {
+        employeeService.assignToProject(employeeId, projectId, hoursAllocated);
+    }
+
+    public void removeFromProject(int employeeId, int projectId) throws SQLException {
+        employeeService.removeFromProject(employeeId, projectId);
+    }
+
+    public double getProjectHoursPercentage(int employeeId, int projectId) {
+        return employeeService.getProjectHoursPercentage(employeeId, projectId);
+    }
+
+    public void transferEmployeeToDepartment(int employeeId, int newDepartmentId){
+        employeeService.transferEmployeeToDepartment(employeeId,newDepartmentId);
     }
 }

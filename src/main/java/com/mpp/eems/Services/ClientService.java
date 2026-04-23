@@ -1,76 +1,72 @@
 package com.mpp.eems.Services;
 
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.List;
-
 import com.mpp.eems.Domain.Client;
 import com.mpp.eems.Repository.ClientProjectRepository;
 import com.mpp.eems.Repository.ClientRepository;
-import com.mpp.eems.Repository.ProjectRepository;
 
-public class ClientService  extends Services{
+import java.sql.SQLException;
+import java.util.List;
 
-    //repo for creating things
-   ClientRepository clientrepo = new ClientRepository();
+public class ClientService {
 
-   /*
-    CRUD OPERAITONS in service
-    
-    */
-    public Client addClient(Client client){
-        Client addedClient = null;
-        //verify client data
+    private final ClientRepository clientRepository;
+    private final ClientProjectRepository clientProjectRepository;
 
-        try {
-            addedClient = clientrepo.addClient(client);
-        } catch (SQLException e) {
-            System.err.println(e.getLocalizedMessage());
-        }
-
-        return addedClient;
+    public ClientService(ClientRepository clientRepository,
+                         ClientProjectRepository clientProjectRepository) {
+        this.clientRepository = clientRepository;
+        this.clientProjectRepository = clientProjectRepository;
     }
 
-    public Client findClientByID(int id){
-        return clientrepo.findClient(id);
+    // ── CRUD ──────────────────────────────────────────────────────────────────
+
+    public List<Client> getAllClients() {
+        return clientRepository.findAllClient();
     }
 
-    public void updateClient(Client client){
-        clientrepo.modifyClient(client);
+    public Client getClientById(int id) {
+        return clientRepository.findClient(id);
     }
 
-    public void deleteClient(Client client){
-        clientrepo.deleteClient(client.getId());
+    public Client createClient(Client client) throws SQLException {
+        return clientRepository.addClient(client);
     }
 
-    public List<Client> findAllClients(){
-        return clientrepo.findAllClient();
+    public void updateClient(Client client) {
+        clientRepository.modifyClient(client);
     }
 
-
-    //lists all clients where their projects have currentDate - project.deadline < daysUntilDeadline
-    public List<Client> findClientsByUpcomingProjectDeadline(int daysUntilDeadline){
-        //Get Clients[] using repository
-        List<Client> clients = findAllClients();
-        ClientProjectRepository cpr = new ClientProjectRepository();
-        ProjectRepository pr = new ProjectRepository();
-        return clients.stream()
-            .filter(c -> cpr.findProjectIdsByClient(c.getId()).stream()
-                        .anyMatch(p -> 
-                            {
-                                try {
-                                    return pr.findProjectById(p)
-                                    .getEndDate()
-                                    .isAfter(LocalDate.now().minusDays(daysUntilDeadline));
-                                } catch (SQLException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
-                                
-                                //in case it didn't work out
-                                return false;
-                            }))
-            .toList();
+    public void deleteClient(int id) {
+        clientRepository.deleteClient(id);
     }
 
+    // ── Project links (Client_Project join table) ─────────────────────────────
+
+    /**
+     * Links a client to a project.
+     */
+    public void linkToProject(int clientId, int projectId) throws SQLException {
+        clientProjectRepository.linkClient(projectId, clientId);
+    }
+
+    /**
+     * Removes a client from a project.
+     */
+    public void unlinkFromProject(int clientId, int projectId) throws SQLException {
+        clientProjectRepository.unlinkClient(projectId, clientId);
+    }
+
+    /**
+     * Returns all project IDs a client is linked to.
+     */
+    public List<Integer> getProjectIdsForClient(int clientId) {
+        return clientProjectRepository.findProjectIdsByClient(clientId);
+    }
+
+    /**
+     * Returns all client IDs linked to a project.
+     */
+    public List<Integer> getClientIdsForProject(int projectId) {
+        return clientProjectRepository.findClientIdsByProject(projectId);
+    }
 }
