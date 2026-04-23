@@ -1,5 +1,6 @@
 package com.mpp.eems.Controller;
 
+<<<<<<< HEAD
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -8,6 +9,13 @@ import java.util.Map;
 import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Services.ProjectService;
 import com.sun.net.httpserver.HttpExchange;
+=======
+import com.mpp.eems.Domain.Project;
+import com.mpp.eems.Services.ProjectService;
+
+import java.sql.SQLException;
+import java.util.List;
+>>>>>>> bd6643fcd7189190f3d4e523adca184997d039f5
 
 public class ProjectController {
 
@@ -76,6 +84,7 @@ public class ProjectController {
     public List<Integer> getDepartmentIdsForProject(int projectId) {
         return projectService.getDepartmentIdsForProject(projectId);
     }
+<<<<<<< HEAD
 
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
@@ -170,3 +179,6 @@ public class ProjectController {
         }
     }
 }
+=======
+}
+>>>>>>> bd6643fcd7189190f3d4e523adca184997d039f5
