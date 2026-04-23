@@ -10,6 +10,9 @@ import java.util.List;
 
 import com.mpp.eems.Domain.Department;
 
+/**
+ * Department repository CRUD operations for departments
+ */
 public class DepartmentRepository extends Repository{
     
     private Department mapRowToDepartment(ResultSet rs) throws SQLException {

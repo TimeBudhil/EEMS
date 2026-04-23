@@ -17,6 +17,10 @@ import com.mpp.eems.Services.DepartmentService;
 import com.mpp.eems.Services.EmployeeService;
 import com.mpp.eems.Services.ProjectService;
 
+/**
+ * TEST services and demonstrate use of services
+ * USAGE: use Controller first to initialize and populate the db
+ */
 public class ServiceTestController {
 
     public static void main(String[] args) throws Exception {

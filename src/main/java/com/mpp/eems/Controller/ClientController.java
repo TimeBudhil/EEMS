@@ -9,6 +9,9 @@ import com.mpp.eems.Domain.Client;
 import com.mpp.eems.Services.ClientService;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * client controlller allows usage of API
+ */
 public class ClientController {
 
     private final ClientService clientService;

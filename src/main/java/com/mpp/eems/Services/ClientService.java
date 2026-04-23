@@ -11,12 +11,11 @@ import com.mpp.eems.Repository.ClientProjectRepository;
 import com.mpp.eems.Repository.ClientRepository;
 import com.mpp.eems.Repository.ProjectRepository;
 
-public class ClientService {
-
-    private final ClientRepository clientRepository = new ClientRepository();
-    private final ClientProjectRepository clientProjectRepository = new ClientProjectRepository();
-    private final ProjectRepository projectRepository = new ProjectRepository();
-    
+/**
+ * CLIENT service uses Client repository, CLIENTPROJECT repository, and Project repo
+ * it uses the repository to implement CRUD operations of clients and all its relationships
+ */
+public class ClientService extends Services {
 
 
     // ── CRUD ──────────────────────────────────────────────────────────────────

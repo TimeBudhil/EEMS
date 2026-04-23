@@ -11,14 +11,12 @@ import com.mpp.eems.Repository.EmployeeRepository;
 import com.mpp.eems.Repository.ProjectDepartmentRepository;
 import com.mpp.eems.Repository.ProjectRepository;
 
-public class ProjectService {
-
-    private final ProjectRepository projectRepository = new ProjectRepository();
-    private final ClientProjectRepository clientProjectRepository = new ClientProjectRepository();
-    private final ProjectDepartmentRepository projectDepartmentRepository = new ProjectDepartmentRepository();
-    private final EmployeeProjectRepository employeeProjectRepository = new EmployeeProjectRepository();
-    private final EmployeeRepository employeeRepository = new EmployeeRepository();
-    private final EmployeeService employeeService = new EmployeeService();
+/**
+ * All crud operations relating to projects
+ * ALL repositories as fields relating to projects, this includes essentially all repositories
+ * contains also calculating costs and getting projects by departmetnt id with sort andwithout sort
+ */
+public class ProjectService extends Services {
 
 
     // ── CRUD ──────────────────────────────────────────────────────────────────

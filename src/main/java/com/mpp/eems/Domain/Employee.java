@@ -3,6 +3,9 @@ package com.mpp.eems.Domain;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * employee entity maps directly to db schema
+ */
 public class Employee{
     private int id;
     private String firstName;

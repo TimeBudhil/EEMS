@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CRUD operatinos for project_department table
+ */
 public class ProjectDepartmentRepository extends Repository{
     public void linkDepartment(int projectId, int departmentId) throws SQLException {
         String sql = "INSERT INTO Project_Department (project_id, department_id) VALUES (?, ?)";

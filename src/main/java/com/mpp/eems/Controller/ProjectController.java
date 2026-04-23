@@ -9,6 +9,9 @@ import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Services.ProjectService;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * CONTROLLER that is used in API
+ */
 public class ProjectController {
 
     private final ProjectService projectService;

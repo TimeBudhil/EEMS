@@ -10,12 +10,11 @@ import com.mpp.eems.Repository.EmployeeProjectRepository;
 import com.mpp.eems.Repository.EmployeeRepository;
 import com.mpp.eems.Repository.ProjectRepository;
 
-public class EmployeeService {
-
-    private final EmployeeRepository employeeRepository = new EmployeeRepository();
-    private final EmployeeProjectRepository employeeProjectRepository = new EmployeeProjectRepository();
-    private final ProjectRepository projectRepository = new ProjectRepository();
-    private final DepartmentRepository departmentRepository = new DepartmentRepository();
+/**
+ * all CRUD oeprations and all services related to employee
+ * uses employee, employee_project, project and department repositories to establish links, create, and find!
+ */
+public class EmployeeService extends Services {
 
 
     // ── CRUD ──────────────────────────────────────────────────────────────────

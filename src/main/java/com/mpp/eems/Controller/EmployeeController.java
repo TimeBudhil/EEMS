@@ -10,6 +10,9 @@ import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Services.EmployeeService;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Controller for employees, API facing controls
+ */
 public class EmployeeController {
 
     private final EmployeeService employeeService;

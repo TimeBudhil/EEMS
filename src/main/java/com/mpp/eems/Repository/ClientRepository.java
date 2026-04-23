@@ -8,6 +8,11 @@ import java.util.List;
 
 import com.mpp.eems.Domain.Client;
 
+/**
+ * client repository has all CRUD oeprations relating to clients. 
+ * maps SQL queries using the map row to column functin
+ * 
+ */
 public class  ClientRepository extends Repository{
 
     private Client mapRowToClient(ResultSet rs) throws SQLException {

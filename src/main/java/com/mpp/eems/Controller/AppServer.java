@@ -8,6 +8,9 @@ import com.mpp.eems.Services.EmployeeService;
 import com.mpp.eems.Services.ProjectService;
 import com.sun.net.httpserver.HttpServer;
 
+/**
+ * API server using all services & controllers
+ */
 public class AppServer {
     public static void start() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);

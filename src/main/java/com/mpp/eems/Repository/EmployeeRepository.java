@@ -10,6 +10,9 @@ import java.util.List;
 import com.mpp.eems.Domain.Department;
 import com.mpp.eems.Domain.Employee;
 
+/**
+ * CRUD operatinos for employees
+ */
 public class EmployeeRepository extends Repository {
 
     // =========================

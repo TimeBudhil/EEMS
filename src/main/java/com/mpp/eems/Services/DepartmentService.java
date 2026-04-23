@@ -4,13 +4,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.mpp.eems.Domain.Department;
-import com.mpp.eems.Repository.DepartmentRepository;
-import com.mpp.eems.Repository.ProjectDepartmentRepository;
 
-public class DepartmentService {
-
-    private final DepartmentRepository departmentRepository = new DepartmentRepository();
-    private final ProjectDepartmentRepository projectDepartmentRepository = new ProjectDepartmentRepository();
+/**
+ * department service — CRUD operations for departments
+ * any function here to establish links or to get project IDs associated with a single department
+ * 
+ */
+public class DepartmentService extends Services  {
 
     // ── CRUD ──────────────────────────────────────────────────────────────────
 

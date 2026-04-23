@@ -6,6 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Client Project repository — purpose: to link clients & projects in the client_project table!
+ * update datbaase accordingly. 
+ * uses get connectin from dbconnectin
+ */
 public class ClientProjectRepository extends Repository {
 
     public void linkClient(int projectId, int clientId) throws SQLException {

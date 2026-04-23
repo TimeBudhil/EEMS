@@ -2,6 +2,9 @@ package com.mpp.eems.Domain;
 
 import java.util.List;
 
+/**
+ * department maps directly to db schema
+ */
 public class Department {
     private int id;
     private String name;

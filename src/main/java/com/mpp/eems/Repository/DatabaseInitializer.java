@@ -7,6 +7,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * CENTRAL class — used to initialize AND update schema in a potsgres db
+ * this especially is helpful for udpating schema and resetting test queries!
+ */
 public class DatabaseInitializer {
 
     public static void initialize() throws SQLException, IOException {

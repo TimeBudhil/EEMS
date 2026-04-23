@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * CRUD operatinos for the employee_project connection!
+ * 
+ */
 public class EmployeeProjectRepository extends Repository {
 
     public void linkEmployee(int projectId, int employeeId) throws SQLException {

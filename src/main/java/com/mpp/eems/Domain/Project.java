@@ -3,6 +3,10 @@ package com.mpp.eems.Domain;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * project domain class
+ * maps directly to the db schema
+ */
 public class Project{
     private int id;
     private String name;
@@ -16,8 +20,6 @@ public class Project{
     //associations
     private List<Employee> employees; //completed by
     private List<Client> clients; //requested by
-
-    //derived association
     private List<Department> departments; //completed by, can be gained by getting employees'departments!
 
     public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, double estimatedDurationHours, double totalBudget, Status status, List<Employee> employees, List<Client> clients) {
@@ -68,10 +70,15 @@ public class Project{
     public List<Client> getClients() {
         return clients;
     }
+
+    public List<Department> getDepartment(){
+        return departments;
+    }
     
     public double getEstimatedDurationHours() {
         return estimatedDurationHours;
     }
+
 
     
 

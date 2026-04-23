@@ -10,6 +10,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Utility class to help with controllers and API
+ */
 public class HttpUtils {
 
     public static final Gson GSON = new GsonBuilder()

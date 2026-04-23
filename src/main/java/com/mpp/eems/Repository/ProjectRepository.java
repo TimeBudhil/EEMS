@@ -12,6 +12,9 @@ import java.util.List;
 import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Domain.Status;
 
+/**
+ * project repository CRUD operations
+ */
 public class ProjectRepository extends Repository {
 
     private Project mapRowToProject(ResultSet rs) throws SQLException {

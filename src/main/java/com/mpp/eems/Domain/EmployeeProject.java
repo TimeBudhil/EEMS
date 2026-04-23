@@ -1,5 +1,9 @@
 package com.mpp.eems.Domain;
 
+/**
+ * specific java entity for employee project becuase of the hours allocated field
+ * other relationships like departmentproject doesn't need its onwn entity
+ */
 public class EmployeeProject {
     private int employeeId;
     private int projectId;

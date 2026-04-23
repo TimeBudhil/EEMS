@@ -16,6 +16,10 @@ import com.mpp.eems.Repository.EmployeeRepository;
 import com.mpp.eems.Repository.ProjectDepartmentRepository;
 import com.mpp.eems.Repository.ProjectRepository;
 
+/**
+ * Initialize and demonstrate correct use of REPOSITORY functions
+ * allows population and initializing of DB
+ */
 public class Controller {
     // ── Repositories ──────────────────────────────────────────────────────────
     static DepartmentRepository    deptRepo    = new DepartmentRepository();

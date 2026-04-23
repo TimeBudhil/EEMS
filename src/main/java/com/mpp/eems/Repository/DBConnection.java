@@ -6,6 +6,11 @@ import java.sql.SQLException;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+/**
+ * connect to the db using this class. 
+ * singelton, so only one connectin can exist at a time. 
+ * certain cases like — if the instance already exists or if the connectino exists is also taken care of here
+ */
 public final class DBConnection {
 
     static Dotenv dotenv = Dotenv.load();

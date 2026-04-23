@@ -9,6 +9,9 @@ import com.mpp.eems.Domain.Department;
 import com.mpp.eems.Services.DepartmentService;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * controller for department, API facing controls
+ */
 public class DepartmentController {
 
     private final DepartmentService departmentService;

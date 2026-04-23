@@ -2,6 +2,9 @@ package com.mpp.eems.Domain;
 
 import java.util.List;
 
+/**
+ * client maps directly to db schema
+ */
 public class Client {
     private int id;
     private String name;
