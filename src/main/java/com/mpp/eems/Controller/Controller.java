@@ -9,6 +9,7 @@ import com.mpp.eems.Domain.Project;
 import com.mpp.eems.Domain.Status;
 import com.mpp.eems.Repository.ClientProjectRepository;
 import com.mpp.eems.Repository.ClientRepository;
+import com.mpp.eems.Repository.DatabaseInitializer;
 import com.mpp.eems.Repository.DepartmentRepository;
 import com.mpp.eems.Repository.EmployeeProjectRepository;
 import com.mpp.eems.Repository.EmployeeRepository;
@@ -27,6 +28,8 @@ public class Controller {
     static ProjectDepartmentRepository  projDeptRepo = new ProjectDepartmentRepository();
 
     public static void main(String[] args) throws Exception {
+        DatabaseInitializer.resetDatabase();  // ← wipes everything
+        DatabaseInitializer.initialize();     // ← recreates schema
 
         // ── 1. CREATE DEPARTMENTS ─────────────────────────────────────────────
         Department engineering  = deptRepo.addDepartment(new Department(0, "Engineering",  "New York",    920000.00, null));

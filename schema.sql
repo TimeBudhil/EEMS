@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS Project (
 CREATE TABLE IF NOT EXISTS Employee_Project (
     employee_id INT,
     project_id INT,
-    hours_allocated DECIMAL(6,2) NOT NULL,
+    hours_allocated DECIMAL(6,2),
     PRIMARY KEY (employee_id, project_id),
     FOREIGN KEY (employee_id) REFERENCES Employee(id),
     FOREIGN KEY (project_id) REFERENCES Project(id)
@@ -52,12 +52,12 @@ CREATE TABLE IF NOT EXISTS Client_Project (
     PRIMARY KEY (client_id, project_id),
     FOREIGN KEY (client_id) REFERENCES Client(id),
     FOREIGN KEY (project_id) REFERENCES Project(id)
-);s
+);
 
 CREATE TABLE IF NOT EXISTS Project_Department (
     project_id INT,
     department_id INT, 
     PRIMARY KEY (project_id, department_id),
     FOREIGN KEY (project_id) REFERENCES Project(id),
-    FOREIGN KEY (department_id) REFERENCES Department(id),
+    FOREIGN KEY (department_id) REFERENCES Department(id)
 );

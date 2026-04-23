@@ -3,7 +3,6 @@ package com.mpp.eems.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,38 +25,36 @@ public class  ClientRepository extends Repository{
 
 
     public Client addClient(Client client) throws SQLException {
-        String sql = "INSERT INTO client (name, industry, primary_contact_name, primary_contact_phone, primary_contact_email) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO client (name, industry, primary_contact_name, primary_contact_phone, primary_contact_email) " +
+                    "VALUES (?, ?, ?, ?, ?) RETURNING id";
 
-        try (PreparedStatement pstmt = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql)) {
             pstmt.setString(1, client.getName());
             pstmt.setString(2, client.getIndustry());
             pstmt.setString(3, client.getPrimaryContactName());
             pstmt.setString(4, client.getPrimaryContactPhone());
             pstmt.setString(5, client.getPrimaryContactEmail());
 
-            pstmt.executeUpdate();
-
-            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int generatedId = generatedKeys.getInt(1);
+            // RETURNING means the ID comes back as a ResultSet, not generated keys
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int generatedId = rs.getInt("id");
                     return new Client(
-                            generatedId,
-                            client.getName(),
-                            client.getIndustry(),
-                            client.getPrimaryContactName(),
-                            client.getPrimaryContactPhone(),
-                            client.getPrimaryContactEmail(),
-                            new ArrayList<>()
+                        generatedId,
+                        client.getName(),
+                        client.getIndustry(),
+                        client.getPrimaryContactName(),
+                        client.getPrimaryContactPhone(),
+                        client.getPrimaryContactEmail(),
+                        new ArrayList<>()
                     );
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         throw new SQLException("Insert failed — no ID returned");
     }
-
+    
     public Client findClient(int id) {
         String sql = "SELECT * FROM client WHERE id = ?";
 
